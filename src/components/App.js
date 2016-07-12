@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
+import ItemContainer from './ItemContainer';
 
 export default class App extends Component {
   render() {
     return (
-      <h1>Hello, world.</h1>
+      <div>
+        <h1>Rain checks for a sunny day.</h1>
+        <ItemContainer />
+      </div>
     );
   }
 }
