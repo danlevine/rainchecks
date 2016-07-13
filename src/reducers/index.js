@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux';
-import items from './items';
+import items, { isFetching } from './items';
 
 const rcApp = combineReducers({
-  items
+  items,
+  isFetching
 });
 
 export default rcApp;

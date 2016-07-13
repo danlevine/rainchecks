@@ -12,7 +12,12 @@ class ItemsContainer extends Component {
   }
 
   render() {
-    const { deleteItem, items } = this.props;
+    const { deleteItem, items, isFetching } = this.props;
+    if (isFetching) {
+      return (
+        <div>Loading...</div>
+      );
+    }
     return (
       <ItemList
         items={items}
@@ -22,9 +27,10 @@ class ItemsContainer extends Component {
   };
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({items, isFetching}) => {
   return {
-    items: state.items
+    items,
+    isFetching
   };
 };
 

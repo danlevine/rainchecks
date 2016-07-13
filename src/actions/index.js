@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-
+import axios from 'axios';
 
 
 // FIREBASE CONFIG
@@ -13,10 +13,15 @@ firebase.initializeApp(config);
 const db = firebase.database();
 const dbItems = db.ref('items');
 
-export const initializeItemsList = () => (dispatch) =>
+export const initializeItemsList = () => (dispatch) => {
+
+  dispatch({
+    type: 'FETCH_ITEMS_REQUEST'
+  });
+
   dbItems.on('value', snapshot => {
     dispatch({
-      type: 'FETCH_ITEMS',
+      type: 'FETCH_ITEMS_SUCCESS',
       payload: snapshot.val()
     });
   });
@@ -29,6 +34,7 @@ export const initializeItemsList = () => (dispatch) =>
       });
     }
   });
+};
 
 export const addItem = (item) => (dispatch) =>
   dbItems.push({name: item});
