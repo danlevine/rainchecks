@@ -40,7 +40,7 @@ export const initializeItemsList = () => (dispatch) => {
     }
 
     if (!currentItem.lastFetched) {
-      let omdbEndpoint = 'http://www.omdbapi.com/?t=' + currentItem.name.replace(/\s/g, '+') + '&y=&plot=full&r=json';
+      let omdbEndpoint = 'http://www.omdbapi.com/?t=' + currentItem.name.replace(/\s/g, '+') + '&y=&plot=full&r=json&type=movie';
 
       axios(omdbEndpoint).then(response => {
         let appendedProps = {
