@@ -6,7 +6,7 @@ import Item from './Item';
 
 const ItemList = ({ items, onDeleteClick }) => {
   return (
-    <ul>
+    <ul className="item-list">
       {_.map(items, (item) =>
         <Item 
           key={item.key}
