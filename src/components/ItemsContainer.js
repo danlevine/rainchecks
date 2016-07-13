@@ -15,7 +15,9 @@ class ItemsContainer extends Component {
     const { deleteItem, items, isFetching } = this.props;
     if (isFetching) {
       return (
-        <div>Loading...</div>
+        <div className="spinner">
+          <span className="spinner__text">Loading...</span>
+          </div>
       );
     }
     return (
