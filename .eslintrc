@@ -9,6 +9,8 @@
   },
   "parser": "babel-eslint",
   "rules": {
+    "no-console": 2,
+    "no-debugger": 2,
     "quotes": [2, "single"],
     "strict": [2, "never"],
     "react/jsx-uses-react": 2,
