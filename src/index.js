@@ -6,7 +6,7 @@ import thunk from 'redux-thunk';
 import rcApp from './reducers';
 import App from './components/App';
 
-import './style.sass';
+import './main.sass';
 
 
 
