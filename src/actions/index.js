@@ -4,10 +4,10 @@ import firebase from 'firebase';
 
 // FIREBASE CONFIG
 const config = {
-  apiKey: "AIzaSyC0WHChgY9Ahgr7t4NRCQajmL_vG6mtQ1o",
-  authDomain: "flickering-fire-3051.firebaseapp.com",
-  databaseURL: "https://flickering-fire-3051.firebaseio.com",
-  storageBucket: "flickering-fire-3051.appspot.com",
+  apiKey: 'AIzaSyC0WHChgY9Ahgr7t4NRCQajmL_vG6mtQ1o',
+  authDomain: 'flickering-fire-3051.firebaseapp.com',
+  databaseURL: 'https://flickering-fire-3051.firebaseio.com',
+  storageBucket: 'flickering-fire-3051.appspot.com',
 };
 firebase.initializeApp(config);
 const db = firebase.database();
