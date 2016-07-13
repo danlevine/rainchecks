@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { deleteItem } from '../actions';
+import { initializeItemsList, deleteItem } from '../actions';
 
 import * as actions from '../actions';
 import ItemList from '../components/ItemList';
 
 class ItemsContainer extends Component {
 
-  
+  componentDidMount() {
+    this.props.initializeItemsList();
+  }
+
   render() {
     const { deleteItem, items } = this.props;
     return (
@@ -21,7 +24,7 @@ class ItemsContainer extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    items: {}
+    items: state.items
   };
 };
 

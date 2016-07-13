@@ -5,4 +5,4 @@ const rcApp = combineReducers({
   items
 });
 
-export default  rcApp;
+export default rcApp;
