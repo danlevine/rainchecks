@@ -1,5 +1,7 @@
-import firebase from 'firebase';
 import axios from 'axios';
+import firebase from 'firebase';
+import _ from 'lodash';
+
 
 
 // FIREBASE CONFIG
@@ -27,12 +29,33 @@ export const initializeItemsList = () => (dispatch) => {
   });
 
   dbItems.on('child_added', snapshot => {
+
+    const currentItem = snapshot.val();
+
     // Copy item key into object for convenience when iterating through items
-    if (!snapshot.val().key) {
+    if (!currentItem.key) {
       db.ref('items/' + snapshot.key).update({
         key: snapshot.key
       });
     }
+
+    if (!currentItem.lastFetched) {
+      let omdbEndpoint = 'http://www.omdbapi.com/?t=' + currentItem.name.replace(/\s/g, '+') + '&y=&plot=full&r=json';
+
+      axios(omdbEndpoint).then(response => {
+        let appendedProps = {
+          lastFetched: _.now(),
+          description: response.data.Plot,
+          poster: response.data.Poster
+        };
+        db.ref('items/' + snapshot.key).update(appendedProps);
+        return;
+      }).catch(error => {
+        // TODO: add error handling mechanism
+        console.log(error); // eslint-disable-line no-console
+      });
+    }
+
   });
 };
 
