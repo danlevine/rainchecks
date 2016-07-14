@@ -11,7 +11,12 @@ class AddItem extends Component {
     const { addItem, isAddFormActive, activateAddItem, cancelAddItem } = this.props;
     if (!isAddFormActive) {
       return (
-        <button onClick={activateAddItem} >+</button>
+        <button
+          className="btn-open-add-item btn-round"
+          onClick={activateAddItem}
+        >
+          <span>+</span>
+        </button>
       );
     }
 
