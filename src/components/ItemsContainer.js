@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { initializeItemsList, deleteItem } from '../actions';
 
 import * as actions from '../actions';
 import ItemList from '../components/ItemList';

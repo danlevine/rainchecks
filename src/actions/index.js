@@ -64,3 +64,13 @@ export const addItem = (item) => (dispatch) =>
 
 export const deleteItem = (key) => (dispatch) => 
   dbItems.child(key).remove();
+
+export const activateAddItem = () => (dispatch) =>
+  dispatch({
+    type: 'ADD_ITEM_FORM_ACTIVATE'
+  });
+
+export const cancelAddItem = () => (dispatch) =>
+  dispatch({
+    type: 'ADD_ITEM_FORM_CANCEL'
+  });

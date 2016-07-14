@@ -1,9 +1,10 @@
 import { combineReducers } from 'redux';
-import items, { isFetching } from './items';
+import items, { isFetching, isAddFormActive } from './items';
 
 const rcApp = combineReducers({
   items,
-  isFetching
+  isFetching,
+  isAddFormActive
 });
 
 export default rcApp;

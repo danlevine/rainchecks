@@ -1,31 +1,40 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addItem } from '../actions';
 
-let AddItem = ({ dispatch }) => {
-  let input;
+import AddItemForm from './AddItemForm';
+import * as actions from '../actions';
 
-  return (
-    <div className="add-item">
-      <form onSubmit={e => {
-        e.preventDefault();
-        if (!input.value.trim()) {
-          return;
-        }
-        dispatch(addItem(input.value));
-        input.value = '';
-      }}>
-        <input ref={node => {
-          input = node;
-        }} />
-        <button type="submit">
-          Add Item
-        </button>
-      </form>
-    </div>
-  );
+
+class AddItem extends Component {
+
+  render () {
+    const { addItem, isAddFormActive, activateAddItem, cancelAddItem } = this.props;
+    if (!isAddFormActive) {
+      return (
+        <button onClick={activateAddItem} >+</button>
+      );
+    }
+
+    return (
+      <div>
+        <AddItemForm 
+          onAddSubmit={addItem}
+          onAddCancel={cancelAddItem}
+        />
+      </div>
+    );
+  };
+}
+
+const mapStateToProps = ({ addItem, isAddFormActive }) => {
+  return {
+    isAddFormActive
+  };
 };
 
-AddItem = connect()(AddItem);
+AddItem = connect(
+  mapStateToProps,
+  actions
+)(AddItem);
 
 export default AddItem;
