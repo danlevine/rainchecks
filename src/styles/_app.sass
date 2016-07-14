@@ -24,7 +24,8 @@ body
 // ============ CONTAINER ELEMENTS ============
 
 #root
-  background-color: #F0EFE9
+  background-color: $page_background_color
+  border-top: 200px solid #fff
   min-height: 100%
   margin: 0
   padding: 0
@@ -32,7 +33,7 @@ body
 .container
   margin: 0 auto
   max-width: 700px
-  padding: 0 20px
+  padding: 0 $default_padding_amount $default_padding_amount
 
 
 
@@ -40,25 +41,46 @@ body
 
 // HEADER
 header
-  height: 100px
+  height: 200px
+  width: 100%
+  position: fixed
+  top: 0
+  left: 0
   @extend %flexbox-vertical-center-children
 
+  div
+    margin: 0 auto
+    background-color: $page_background_color
+    padding: 40px
+    border-radius: 100px
+    height: 150px
+    width: 150px
+
+    display: flex
+    justify-content: center
+    align-items: center
 
 h1
+  color: white
+  display: block
   font-size: 18px
+  text-align: center
+  margin: 0
+  min-width: 100px  
 
 // ITEM LIST
 .item-list
+  background-color: $page_background_color
   list-style: none
-  padding: 0
+  margin-top: 0
+  padding: 50px 0 0
   position: relative
-
 
 // ITEM
 .item
   background-color: white
   border-radius: 20px
-  box-shadow: 7px 7px 0px rgba(0,0,0,.3)
+  // box-shadow: 0px 0px 0px 5px rgba(255, 255, 255, 0.6)
   margin-bottom: 50px
   padding: 40px
   position: relative
@@ -83,6 +105,11 @@ h1
   font-weight: bold
   margin-left: 10px
 
+// ADD ITEM
+.add-item
+  position: fixed
+  bottom: 40px
+  right: 40px
 
 // ============ LOADING SPINNER ============
 

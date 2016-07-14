@@ -4,7 +4,9 @@ import React from 'react';
 
 const Header = () => (
   <header>
-    <h1>Rain checks for a sunny day.</h1>
+    <div>
+      <h1>rain<br/>checks</h1>
+    </div>
   </header>
 );
 
