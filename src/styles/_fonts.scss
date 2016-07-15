@@ -1,0 +1,22 @@
+@import 'assets/fonts/geomanist/geomanist';
+
+@font-face {
+  font-family: 'BTRaindrops';
+  src: url('assets/fonts/blessingsthroughraindrops/blessingsthroughraindrops-webfont.woff2');
+  src: url('assets/fonts/blessingsthroughraindrops/blessingsthroughraindrops-webfont.eot?#iefix') format('embedded-opentype'),
+       url('assets/fonts/blessingsthroughraindrops/blessingsthroughraindrops-webfont.woff2') format('woff2'),
+       url('assets/fonts/blessingsthroughraindrops/blessingsthroughraindrops-webfont.woff') format('woff'),
+       url('assets/fonts/blessingsthroughraindrops/blessingsthroughraindrops-webfont.ttf') format('truetype'),
+       url('assets/fonts/blessingsthroughraindrops/blessingsthroughraindrops-webfont.svg#blessings_through_raindropsRg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SmartKid';
+  src: url('assets/fonts/smart_kid/smart_kid-webfont.woff2') format('woff2'),
+       url('assets/fonts/smart_kid/smart_kid-webfont.woff') format('woff'),
+       url('assets/fonts/smart_kid/smart_kid-webfont.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
