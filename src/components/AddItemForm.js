@@ -24,7 +24,7 @@ let AddItemForm = ({ onAddSubmit, onAddCancel }) => {
         />
         <div className="add-item-form__footer">
           <button type="submit">
-            Add Item
+            Add
           </button>
           <button
             type="button" 
