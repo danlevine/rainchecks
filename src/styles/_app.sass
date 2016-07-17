@@ -119,24 +119,46 @@ h1
 
 // ITEM
 .item
-  background-color: white
-  border-radius: 20px
-  // box-shadow: 0px 0px 0px 5px rgba(255, 255, 255, 0.6)
+  background-color: rgba(255, 255, 255, 0.2)
+  border-radius: 5px
+  color: white
   margin-bottom: 50px
-  padding: 40px
   position: relative
-
-.item__name
-  display: inline-block
-  font-size: 32px
-  font-weight: 500
-  margin: 0 0 20px
+  height: 300px
 
 .item__poster
-  max-height: 80px
+  border-radius: 5px 0 0 5px
+  height: 300px
+  width: 200px
   display: inline-block
   right: 40px
+  position: absolute
   top: 0
+  left: 0
+
+.item__info
+  padding: 10px 10px 10px 220px
+  font-size: 13px
+  font-weight: 300
+
+.item__info__name
+  display: inline-block
+  font-size: 18px
+  font-weight: 500
+  margin: 0
+
+.item__info__genre
+  margin: 0
+
+.item__info__tech
+  margin: 0
+
+.item__info__scores
+  list-style-type: none
+  position: absolute
+  top: 10px
+  right: 10px
+  text-align: right
 
 .item__btn-delete
   background-color: black

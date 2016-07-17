@@ -40,13 +40,26 @@ export const initializeItemsList = () => (dispatch) => {
     }
 
     if (!currentItem.lastFetched) {
-      let omdbEndpoint = 'http://www.omdbapi.com/?t=' + currentItem.name.replace(/\s/g, '+') + '&y=&plot=full&r=json&type=movie';
+      let omdbEndpoint = 'http://www.omdbapi.com/?t=' + currentItem.name.replace(/\s/g, '+') + '&y=&plot=short&r=json&type=movie&tomatoes=true';
 
-      axios(omdbEndpoint).then(response => {
+      axios(omdbEndpoint).then(({data}) => {
         let appendedProps = {
           lastFetched: _.now(),
-          description: response.data.Plot,
-          poster: response.data.Poster
+          year: data.Year,
+          rated: data.Rated,
+          runtime: data.Runtime,
+          genre: data.Genre,
+          director: data.Director,
+          actors: data.Actors,
+          description: data.Plot,
+          country: data.Country,
+          awards: data.Awards,
+          poster: data.Poster,
+          scoreMetacritic: data.Metascore,
+          scoreImdb: data.imdbRating,
+          scoreTomato: data.tomatoMeter,
+          scoreTomatoUser: data.tomatoUserMeter,
+          tomatoConsensus: data.tomatoConsensus
         };
         db.ref('items/' + snapshot.key).update(appendedProps);
         return;
