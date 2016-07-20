@@ -12,16 +12,17 @@ html
      -moz-box-sizing: inherit
           box-sizing: inherit
 
-html,
-body
-  font-family: 'Geomanist'
-  color: #3e3d40
+html
   height: 100%
   min-height: 100%
+  -ms-touch-action: manipulation
+  touch-action: manipulation
+
+body
+  height: 100%
+  width: 100%
   margin: 0
   padding: 0
-
-  
 
 // ============ CONTAINER ELEMENTS ============
 
@@ -35,7 +36,7 @@ body
 .container
   margin: 0 auto
   max-width: 700px
-  padding: 0 $default_padding_amount $default_padding_amount
+  padding: 0 $default_padding_amount
 
 
 
@@ -47,15 +48,15 @@ body
   border-radius: 999em
   width: 56px
   height: 56px
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26)
   line-height: 1
   font-size: 36px
   position: relative
   cursor: pointer
+  @extend %mdl-shadow--6dp
 
   &:active
     transform: translateY(2px)
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.4)
+    @extend %mdl-shadow--3dp
 
   span
     position: absolute
@@ -113,56 +114,115 @@ h1
 .item-list
   background-color: $page_background_color
   list-style: none
-  margin-top: 0
-  padding: 50px 0 0
+  margin: 0
+  padding: 16px 0
+  padding: $default_padding_amount 0
   position: relative
 
   animation-duration: 1.5s
   animation-name: slidein-item
-  animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1)
+  animation-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1)
 
 // ITEM
+$item_border_radius: 2px
+$item_poster_height_small: 150px
+$item_poster_height_medium: 300px
+
 .item
-  background-color: rgba(255, 255, 255, 0.15)
-  border-radius: 5px
-  color: white
-  margin-bottom: 50px
+  background-color: #fff
+  border-radius: $item_border_radius
+  margin-bottom: 16px
   position: relative
-  height: 300px
+  height: $item_poster_height_small
+  overflow: hidden
+  @extend %mdl-shadow--2dp
+
+  &:last-of-type
+    margin-bottom: 0
+
+  @media (min-width: $break_small)
+    height: $item_poster_height_medium
 
 .item__poster
-  border-radius: 5px 0 0 5px
-  height: 300px
-  width: 200px
+  height: $item_poster_height_small
+  width: 100px
   display: inline-block
   right: 40px
   position: absolute
   top: 0
   left: 0
 
-.item__info
-  padding: 10px 10px 10px 220px
+  @media (min-width: $break_small)
+    height: 300px
+    width: 200px
+    border-radius: $item_border_radius 0 0 $item_border_radius
+
+.item__info-block
+  padding: 16px 16px 16px 116px
   font-size: 13px
   font-weight: 300
 
-.item__info__name
+  @media (min-width: $break_small)
+    padding-left: 216px
+
+.item__label
+  padding-right: 44px
+
+.item__name
+  font-size: 14px
   display: inline-block
-  font-size: 18px
   font-weight: 500
   margin: 0
 
-.item__info__genre
+  @media (min-width: $break_small)
+    font-size: 18px
+
+.item__genre
   margin: 0
 
-.item__info__tech
+.item__tech-info
   margin: 0
 
-.item__info__scores
+.item__scores
   list-style-type: none
   position: absolute
-  top: 10px
-  right: 10px
+  top: 0
+  right: 0
   text-align: right
+  width: 55px
+  padding-top: inherit
+  padding-right: inherit
+  padding-left: 0
+  padding-bottom: 0
+
+.item__description
+  display: none
+
+  @media (min-width: $break_small)
+    display: block
+
+.item__btn-moreinfo
+  position: absolute
+  bottom: 0
+  right: 0
+  border: none
+  border-top: 1px dotted $border_gray
+  height: 32px
+  line-height: 28px
+  display: inline-block
+  left: 116px
+  cursor: pointer
+  background: none
+  padding: 0
+  width: 100%
+  text-align: left
+
+  &:focus
+    text-decoration: underline
+    outline: none
+
+  @media (min-width: $break_small)
+    display: none
 
 .item__btn-delete
   background-color: black
@@ -172,6 +232,10 @@ h1
   font-size: 14px
   font-weight: bold
   margin-left: 10px
+  display: none
+
+  @media (min-width: $break_small)
+    display: block
 
 // ADD ITEM
 .btn-open-add-item
