@@ -30,8 +30,8 @@ class Item extends Component {
             scoreTomato,
             scoreTomatoUser,
             tomatoConsensus } = this.props;
-    const expandedClassString = this.state.itemExpanded ? " item-expanded" : " item-collapsed";
-    const moreInfoBtnTxt = this.state.itemExpanded ? "Hide" : "Show";
+    const expandedClassString = this.state.itemExpanded ? ' item-expanded' : ' item-collapsed';
+    const moreInfoBtnTxt = this.state.itemExpanded ? 'Hide' : 'Show';
     return (
       <li className={`item${expandedClassString}`}>
         <img className="item__poster" src={poster} alt={`${name} movie poster`} />
