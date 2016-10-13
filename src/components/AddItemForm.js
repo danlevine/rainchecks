@@ -17,7 +17,7 @@ let AddItemForm = ({ onAddSubmit, onAddCancel }) => {
       }}>
         <input 
           className="add-item-form__input"
-          placeholder="add something for later..."
+          placeholder=" type movie here"
           ref={node => {
             input = node;
           }}
