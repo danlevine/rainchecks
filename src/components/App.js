@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import AddItem from './AddItem';
+import AddItemLauncher from './AddItemLauncher';
 import ItemsContainer from './ItemsContainer';
 import Header from './Header';
 
@@ -10,7 +10,7 @@ export default class App extends Component {
       <div className="container">
         <Header />
         <ItemsContainer />
-        <AddItem />
+        <AddItemLauncher />
       </div>
     );
   }

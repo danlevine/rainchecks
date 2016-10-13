@@ -1,45 +1,40 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-
-import AddItemForm from './AddItemForm';
-import * as actions from '../actions';
+import React from 'react';
 
 
-class AddItem extends Component {
 
-  render () {
-    const { addItem, isAddFormActive, activateAddItem, cancelAddItem } = this.props;
-    if (!isAddFormActive) {
-      return (
-        <button
-          className="btn-open-add-item btn-round"
-          onClick={activateAddItem}
-        >
-          <span>+</span>
-        </button>
-      );
-    }
+let AddItem = ({ onAddSubmit, onAddCancel }) => {
+  let input;
 
-    return (
-      <div>
-        <AddItemForm 
-          onAddSubmit={addItem}
-          onAddCancel={cancelAddItem}
+  return (
+    <div className="add-item-form">
+      <form onSubmit={e => {
+        e.preventDefault();
+        if (!input.value.trim()) {
+          return;
+        }
+        onAddSubmit(input.value);
+        input.value = '';
+      }}>
+        <input 
+          className="add-item-form__input"
+          placeholder=" type movie here"
+          ref={node => {
+            input = node;
+          }}
         />
-      </div>
-    );
-  };
-}
-
-const mapStateToProps = ({ addItem, isAddFormActive }) => {
-  return {
-    isAddFormActive
-  };
+        <div className="add-item-form__footer">
+          <button type="submit">
+            Add
+          </button>
+          <button
+            type="button" 
+            onClick={onAddCancel}>
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  );
 };
-
-AddItem = connect(
-  mapStateToProps,
-  actions
-)(AddItem);
 
 export default AddItem;
