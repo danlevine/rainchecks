@@ -8,7 +8,7 @@ import * as actions from '../actions';
 class AddItemLauncher extends Component {
 
   render () {
-    const { addItem, isAddFormActive, activateAddItem, cancelAddItem } = this.props;
+    const { isAddFormActive, activateAddItem, cancelAddItem } = this.props;
     if (!isAddFormActive) {
       return (
         <button
@@ -23,7 +23,6 @@ class AddItemLauncher extends Component {
     return (
       <div>
         <AddItem
-          onAddSubmit={addItem}
           onAddCancel={cancelAddItem}
         />
       </div>

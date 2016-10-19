@@ -40,11 +40,17 @@ export const initializeItemsList = () => (dispatch) => {
     }
 
     if (!currentItem.lastFetched) {
-      let omdbEndpoint = 'https://www.omdbapi.com/?t=' + currentItem.name.replace(/\s/g, '+') + '&y=&plot=short&r=json&type=movie&tomatoes=true';
+      if (currentItem.imdbID) {
+        var omdbEndpoint = 'https://www.omdbapi.com/?i=' + currentItem.imdbID + '&y=&plot=short&r=json&type=movie&tomatoes=true';
+      }
+      else {
+        var omdbEndpoint = 'https://www.omdbapi.com/?t=' + currentItem.name.replace(/\s/g, '+') + '&y=&plot=short&r=json&type=movie&tomatoes=true';
+      }
 
       axios(omdbEndpoint).then(({data}) => {
         let appendedProps = {
           lastFetched: _.now(),
+          name: data.Title,
           year: data.Year,
           rated: data.Rated,
           runtime: data.Runtime,
@@ -59,7 +65,8 @@ export const initializeItemsList = () => (dispatch) => {
           scoreImdb: data.imdbRating,
           scoreTomato: data.tomatoMeter,
           scoreTomatoUser: data.tomatoUserMeter,
-          tomatoConsensus: data.tomatoConsensus
+          tomatoConsensus: data.tomatoConsensus,
+          imdbID: data.imdbID
         };
         db.ref('items/' + snapshot.key).update(appendedProps);
         return;
@@ -72,11 +79,54 @@ export const initializeItemsList = () => (dispatch) => {
   });
 };
 
-export const addItem = (item) => (dispatch) =>
-  dbItems.push({name: item});
+export const addItem = (item) => (dispatch) => {
+  if (typeof item === 'object') {
+    dbItems.push({name: item.Title, imdbID: item.imdbID});
+  }
+  else {
+    dbItems.push({name: item.Title});
+  }
+}
 
 export const deleteItem = (key) => (dispatch) => 
   dbItems.child(key).remove();
+
+export const loadSuggestions = (value) => (dispatch) => {
+  dispatch(loadSuggestionsBegin());
+
+  let omdbEndpoint = 'https://www.omdbapi.com/?s=' + value + '&type=movie';
+  
+  axios(omdbEndpoint).then(({data}) => {
+    dispatch(maybeUpdateSuggestions(data.Search || [], value));
+  });
+};
+
+export const updateInputValue = (value) => (dispatch) => {
+  dispatch({
+    type: 'UPDATE_INPUT_VALUE',
+    value
+  });
+};
+
+export const clearSuggestions = () => (dispatch) => {
+  dispatch({
+    type: 'CLEAR_SUGGESTIONS'
+  });
+};
+
+export const loadSuggestionsBegin = () => (dispatch) => {
+  dispatch({
+    type: 'LOAD_SUGGESTIONS_BEGIN'
+  });
+};
+
+export const maybeUpdateSuggestions = (suggestions, value) => (dispatch) => {
+  dispatch({
+    type: 'MAYBE_UPDATE_SUGGESTIONS',
+    suggestions,
+    value
+  });
+};
 
 export const activateAddItem = () => (dispatch) =>
   dispatch({
