@@ -12,7 +12,7 @@ class AddItem extends Component {
     const isLoading = this.props.suggestions.isLoading;
     const { addItem, onAddCancel, suggestions, onChange, onSuggestionsFetchRequested, onSuggestionsClearRequested, onSuggestionSelected } = this.props;
     const inputProps = {
-      placeholder: 'type move here',
+      placeholder: 'type movie here',
       value,
       onChange,
       autoFocus: true,
@@ -55,32 +55,32 @@ class AddItem extends Component {
   };
 }
 
-function getSuggestionValue(suggestion) {
+const getSuggestionValue = suggestion => {
   return suggestion.Title;
-}
+};
 
-function renderSuggestion(suggestion) {
+const renderSuggestion = suggestion => {
   return (
     <div className="react-autosuggest__item">
       <h3>{suggestion.Title} - <small>{suggestion.Year}</small></h3>
     </div>
   );
-}
+};
 
-function shouldRenderSuggestions(value) {
+const shouldRenderSuggestions = value => {
   return value.trim().length >= 0;
-}
+};
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   const { value, suggestions, isLoading } = state;
   return {
     value,
     suggestions,
     isLoading
   };
-}
+};
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = dispatch => {
   return {
     onChange(event, { newValue }) {
       dispatch(updateInputValue(newValue));
@@ -97,7 +97,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(updateInputValue(''));
     }
   };
-}
+};
 
 AddItem = connect(
   mapStateToProps, 
