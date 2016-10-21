@@ -68,7 +68,7 @@ const renderSuggestion = suggestion => {
 };
 
 const shouldRenderSuggestions = value => {
-  return value.trim().length >= 0;
+  return value.trim().length >= 2;
 };
 
 const mapStateToProps = state => {
