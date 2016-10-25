@@ -12,7 +12,7 @@ class AddItemLauncher extends Component {
     if (!isAddFormActive) {
       return (
         <button
-          className="btn-open-add-item btn-round"
+          className="btn-action btn-round"
           onClick={activateAddItem}
         >
           <span>+</span>

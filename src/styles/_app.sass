@@ -110,6 +110,12 @@ h1
   bottom: 22px
   right: 14px
 
+// ACTION BUTTON
+.btn-action
+  position: fixed
+  bottom: 20px
+  right: 20px
+
 // ITEM LIST
 .item-list
   background-color: $page_background_color
@@ -274,11 +280,6 @@ $item_footer_button_height: 32px
       
 
 // ADD ITEM
-.btn-open-add-item
-  position: fixed
-  bottom: 20px
-  right: 20px
-
 .add-item-form
   background-color: rgba(33,33,33,.95)
   position: fixed
@@ -292,9 +293,6 @@ $item_footer_button_height: 32px
   animation-name: slidein-up
   animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1)
 
-  form
-
-
 .add-item-form__input
   border: none
   border-bottom: 3px solid #fff
@@ -302,26 +300,12 @@ $item_footer_button_height: 32px
   background: none
   display: block
   font-size: 32px
-  margin: 20px auto 0 auto
+  margin: 20px auto 40px auto
   width: 100%
   max-width: 660px
 
   &:focus
     outline: none
-
-.add-item-form__footer
-  background-color: #f2f2f2
-  position: absolute
-  left: 0
-  bottom: 0
-  width: 100%
-  direction: rtl
-
-  button
-    background: none
-    border: none
-    padding: 10px 20px
-    text-transform: uppercase
 
 // ============ LOADING SPINNER ============
 

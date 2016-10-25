@@ -22,34 +22,22 @@ class AddItem extends Component {
 
     return (
       <div className="add-item-form">
-        <form onSubmit={e => {
-          e.preventDefault();
-          if (!input.value.trim()) {
-            return;
-          }
-          onAddSubmit(input.value);
-        }}>
-          <Autosuggest
-            suggestions={suggestions.suggestions}
-            onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-            onSuggestionsClearRequested={onSuggestionsClearRequested}
-            onSuggestionSelected={onSuggestionSelected}
-            getSuggestionValue={getSuggestionValue}
-            renderSuggestion={renderSuggestion}
-            shouldRenderSuggestions={shouldRenderSuggestions}
-            alwaysRenderSuggestions={true}
-            inputProps={inputProps} />
-          <div className="add-item-form__footer">
-            <button type="submit">
-              Add
-            </button>
-            <button
-              type="button" 
-              onClick={onAddCancel}>
-              Cancel
-            </button>
-          </div>
-        </form>
+        <Autosuggest
+          suggestions={suggestions.suggestions}
+          onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+          onSuggestionsClearRequested={onSuggestionsClearRequested}
+          onSuggestionSelected={onSuggestionSelected}
+          getSuggestionValue={getSuggestionValue}
+          renderSuggestion={renderSuggestion}
+          shouldRenderSuggestions={shouldRenderSuggestions}
+          alwaysRenderSuggestions={true}
+          inputProps={inputProps} />
+        <button
+          type="button"
+          className="btn-action btn-round"
+          onClick={onAddCancel}>
+          <span>x</span>
+        </button>
       </div>
     );
   };
