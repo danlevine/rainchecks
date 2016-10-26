@@ -12,7 +12,7 @@ class AddItem extends Component {
     const isLoading = this.props.suggestions.isLoading;
     const { addItem, onAddCancel, suggestions, onChange, onSuggestionsFetchRequested, onSuggestionsClearRequested, onSuggestionSelected } = this.props;
     const inputProps = {
-      placeholder: 'type movie here',
+      placeholder: 'search movie here',
       value,
       onChange,
       autoFocus: true,
