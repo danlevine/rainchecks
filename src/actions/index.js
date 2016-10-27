@@ -1,7 +1,7 @@
 import axios from 'axios';
 import firebase from 'firebase';
 import _ from 'lodash';
-
+import moment from 'moment';
 
 
 // FIREBASE CONFIG
@@ -22,9 +22,12 @@ export const initializeItemsList = () => (dispatch) => {
   });
 
   dbItems.on('value', snapshot => {
+    // convert movie list object into array for processing
+    const movieArray = _.values(snapshot.val());
+    const sortedMovieArray = movieArray.sort((a, b) => moment(b.dateAdded) - moment(a.dateAdded));
     dispatch({
       type: 'FETCH_ITEMS_SUCCESS',
-      payload: snapshot.val()
+      payload: sortedMovieArray
     });
   });
 
@@ -38,7 +41,6 @@ export const initializeItemsList = () => (dispatch) => {
         key: snapshot.key
       });
     }
-
     if (!currentItem.lastFetched) {
       if (currentItem.imdbID) {
         var omdbEndpoint = 'https://www.omdbapi.com/?i=' + currentItem.imdbID + '&y=&plot=short&r=json&type=movie&tomatoes=true';
@@ -47,9 +49,11 @@ export const initializeItemsList = () => (dispatch) => {
         var omdbEndpoint = 'https://www.omdbapi.com/?t=' + currentItem.name.replace(/\s/g, '+') + '&y=&plot=short&r=json&type=movie&tomatoes=true';
       }
 
+      let currentDateTime = moment().format();
       axios(omdbEndpoint).then(({data}) => {
         let appendedProps = {
-          lastFetched: _.now(),
+          lastFetched: currentDateTime,
+          dateAdded: currentDateTime,
           name: data.Title,
           year: data.Year,
           rated: data.Rated,
