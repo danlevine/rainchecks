@@ -44,10 +44,7 @@ class AddItem extends Component {
   };
 }
 
-const getSuggestionValue = suggestion => {
-  return suggestion.Title;
-};
-
+const getSuggestionValue = suggestion => suggestion.Title;
 
 const renderInputComponent = inputProps => (
   <div className='add-item-form__input-container'>
@@ -61,17 +58,13 @@ const renderInputComponent = inputProps => (
 );
 
 
-const renderSuggestion = suggestion => {
-  return (
-    <div className="react-autosuggest__item">
-      <h3>{suggestion.Title} - <small>{suggestion.Year}</small></h3>
-    </div>
-  );
-};
+const renderSuggestion = suggestion => (
+  <div className="react-autosuggest__item">
+    <h3>{suggestion.Title} - <small>{suggestion.Year}</small></h3>
+  </div>
+);
 
-const shouldRenderSuggestions = value => {
-  return value.trim().length >= 2;
-};
+const shouldRenderSuggestions = value => value.trim().length >= 2;
 
 const mapStateToProps = state => {
   const { value, suggestions, isLoading } = state;
