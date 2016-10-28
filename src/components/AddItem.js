@@ -37,7 +37,7 @@ class AddItem extends Component {
           type="button"
           className="btn-action btn-round"
           onClick={onAddCancel}>
-          <span>x</span>
+          <i className="fa fa-times"></i>
         </button>
       </div>
     );
