@@ -15,19 +15,20 @@ class AddItem extends Component {
       placeholder: 'search movie here',
       value,
       onChange,
+      isLoading,
       autoFocus: true,
       className: 'add-item-form__input'
     };
-    const status = (isLoading ? 'Loading...' : 'Type to load suggestions');
 
     return (
-      <div className="add-item-form">
+      <div className="add-item-form" data-loading={isLoading}>
         <Autosuggest
           suggestions={suggestions.suggestions}
           onSuggestionsFetchRequested={onSuggestionsFetchRequested}
           onSuggestionsClearRequested={onSuggestionsClearRequested}
           onSuggestionSelected={onSuggestionSelected}
           getSuggestionValue={getSuggestionValue}
+          renderInputComponent={renderInputComponent}
           renderSuggestion={renderSuggestion}
           shouldRenderSuggestions={shouldRenderSuggestions}
           alwaysRenderSuggestions={true}
@@ -46,6 +47,19 @@ class AddItem extends Component {
 const getSuggestionValue = suggestion => {
   return suggestion.Title;
 };
+
+
+const renderInputComponent = inputProps => (
+  <div className='add-item-form__input-container'>
+    <input {...inputProps} />
+    { inputProps.isLoading ?
+      <div className="spinner spinner-light">
+        <span className="spinner__text">Loading...</span>
+      </div>
+      : null }
+  </div>
+);
+
 
 const renderSuggestion = suggestion => {
   return (

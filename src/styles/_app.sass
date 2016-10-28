@@ -293,16 +293,29 @@ $item_footer_button_height: 32px
   animation-name: slidein-up
   animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1)
 
+.add-item-form__input-container
+  border-bottom: 3px solid #fff
+  margin: $default_padding_amount auto 40px auto
+  width: 100%
+  max-width: 660px
+  position: relative
+  
+  .spinner
+    height: 15px
+    width: 15px
+    border-width: 2px
+    margin: 0
+    position: absolute
+    top: -7px
+    right: -7px
+
 .add-item-form__input
   border: none
-  border-bottom: 3px solid #fff
   color: #fff
   background: none
   display: block
   font-size: 32px
-  margin: 20px auto 40px auto
   width: 100%
-  max-width: 660px
 
   &:focus
     outline: none
@@ -315,15 +328,32 @@ $item_footer_button_height: 32px
   width: 75px
   margin: 40px auto 0 auto
   position: relative
-  -webkit-animation: rotation .6s infinite linear
-  -moz-animation: rotation .6s infinite linear
-  -o-animation: rotation .6s infinite linear
-  animation: rotation .6s infinite linear
-  border-left: 8px solid rgba(0, 0, 0, 0.15)
-  border-right: 8px solid rgba(0, 0, 0, 0.15)
-  border-bottom: 8px solid rgba(0, 0, 0, 0.15)
-  border-top: 8px solid rgba(0, 0, 0, 0.6)
+  -webkit-animation: fadein 1.5s, rotation .6s infinite linear
+  -moz-animation: fadein 1.5s, rotation .6s infinite linear
+  -o-animation: fadein 1.5s, rotation .6s infinite linear
+  animation: fadein 1.5s, rotation .6s infinite linear
   border-radius: 100%
+  border-left-width: 8px
+  border-right-width: 8px
+  border-bottom-width: 8px
+  border-top-width: 8px
+  border-left-style: solid
+  border-right-style: solid
+  border-bottom-style: solid
+  border-top-style: solid
+
+  &.spinner-light
+    border-left-color: rgba(255, 255, 255, 0.15)
+    border-right-color: rgba(255, 255, 255, 0.15)
+    border-bottom-color: rgba(255, 255, 255, 0.15)
+    border-top-color: rgba(255, 255, 255, 0.6)
+
+  &.spinner-dark
+    border-left-color: rgba(0, 0, 0, 0.15)
+    border-right-color: rgba(0, 0, 0, 0.15)
+    border-bottom-color: rgba(0, 0, 0, 0.15)
+    border-top-color: rgba(0, 0, 0, 0.6)
+  
 
 .spinner__text
   @extend %visuallyhidden
