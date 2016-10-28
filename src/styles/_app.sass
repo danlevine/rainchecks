@@ -209,6 +209,9 @@ $item_footer_button_height: 32px
     justify-content: flex-end
     font-size: 10px
 
+    @media(min-width: $break_small)
+      font-size: 13px
+
     &:after
       content: ''
       margin-left: 2px
@@ -224,6 +227,9 @@ $item_footer_button_height: 32px
   background: url('assets/icons/imdb.svg') no-repeat
 .item__score-metacritic:after
   background: url('assets/icons/metacritic.svg') no-repeat
+
+.item__score-percent
+  font-size: 10px
 
 .item__description
   border-top: 1px dashed $border_gray

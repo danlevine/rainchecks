@@ -43,10 +43,10 @@ class Item extends Component {
           </div>
           <ul className="item__scores">
             { scoreTomato === 'N/A' ? null :
-              <li className="item__score-tomato">{scoreTomato}</li>
+              <li className="item__score-tomato">{scoreTomato}<span className="item__score-percent">%</span></li>
             }
             { scoreTomatoUser === 'N/A' ? null :
-              <li className="item__score-tomato-user">{scoreTomatoUser}%</li>
+              <li className="item__score-tomato-user">{scoreTomatoUser}<span className="item__score-percent">%</span></li>
             }
             { scoreImdb === 'N/A' ? null :
               <li className="item__score-imdb">{scoreImdb}</li>
