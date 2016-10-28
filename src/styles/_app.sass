@@ -202,7 +202,28 @@ $item_footer_button_height: 32px
   padding-top: inherit
   padding-right: inherit
   padding-left: 0
-  padding-bottom: 0
+
+  li
+    display: flex
+    align-items: center
+    justify-content: flex-end
+    font-size: 10px
+
+    &:after
+      content: ''
+      margin-left: 2px
+      width: 14px
+      height: 14px
+      background-position: center
+
+.item__score-tomato:after
+  background: url('assets/icons/tomato.svg') no-repeat
+.item__score-tomato-user:after
+  background: url('assets/icons/flixster.svg') no-repeat
+.item__score-imdb:after
+  background: url('assets/icons/imdb.svg') no-repeat
+.item__score-metacritic:after
+  background: url('assets/icons/metacritic.svg') no-repeat
 
 .item__description
   border-top: 1px dashed $border_gray

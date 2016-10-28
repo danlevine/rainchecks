@@ -42,10 +42,18 @@ class Item extends Component {
             <p className="item__tech-info">{`${year} ${rated} ${runtime}`}</p>
           </div>
           <ul className="item__scores">
-            <li className="item__score-tomato">{scoreTomato}%</li>
-            <li className="item__score-tomato-user">{scoreTomatoUser}%</li>
-            <li className="item__score-imdb">{scoreImdb}</li>
-            <li className="item__score-metacritic">{scoreMetacritic}</li>
+            { scoreTomato === 'N/A' ? null :
+              <li className="item__score-tomato">{scoreTomato}</li>
+            }
+            { scoreTomatoUser === 'N/A' ? null :
+              <li className="item__score-tomato-user">{scoreTomatoUser}%</li>
+            }
+            { scoreImdb === 'N/A' ? null :
+              <li className="item__score-imdb">{scoreImdb}</li>
+            }
+            { scoreMetacritic === 'N/A' ? null :
+              <li className="item__score-metacritic">{scoreMetacritic}</li>
+            }
           </ul>
           <div className="item__description">
             <p className="item__plot">{description}</p>
