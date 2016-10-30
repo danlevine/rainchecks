@@ -6,6 +6,14 @@ import { addItem, loadSuggestions, updateInputValue, clearSuggestions, loadSugge
 
 
 class AddItem extends Component {
+  componentDidMount() {
+    document.body.className += document.body.className.length ? ' no-scroll' : 'no-scroll';
+  };
+
+  componentWillUnmount() {
+    document.body.className = document.body.className.replace(/ ?no-scroll/, '');
+  };
+
   render() {
     let input;
     const value = this.props.suggestions.value;

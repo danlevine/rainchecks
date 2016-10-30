@@ -15,7 +15,7 @@ class AddItemLauncher extends Component {
           className="btn-action btn-round"
           onClick={activateAddItem}
         >
-          <i className="fa fa-plus fa-fw"></i>
+          <i className="fa fa-plus"></i>
         </button>
       );
     }
