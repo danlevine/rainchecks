@@ -4,13 +4,15 @@ import Item from './Item';
 
 
 
-const ItemList = ({ items, onDeleteClick }) => {
+const ItemList = ({ items, onArchiveClick, onUnarchiveClick, onDeleteClick }) => {
   return (
     <ul className="item-list">
-      {_.map(items, (item) =>
+      {_.map(items.filteredItems, (item) =>
         <Item 
           key={item.key}
           {...item}
+          onArchiveClick={() => onArchiveClick(item.key)}
+          onUnarchiveClick={() => onUnarchiveClick(item.key)}
           onDeleteClick={() => onDeleteClick(item.key)}
         />
       )}

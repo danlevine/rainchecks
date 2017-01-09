@@ -25,6 +25,7 @@ export const initializeItemsList = () => (dispatch) => {
     // convert movie list object into array for processing
     const movieArray = _.values(snapshot.val());
     const sortedMovieArray = movieArray.sort((a, b) => moment(b.dateAdded) - moment(a.dateAdded));
+    console.log('dbitems:value');
     dispatch({
       type: 'FETCH_ITEMS_SUCCESS',
       payload: sortedMovieArray
@@ -52,6 +53,7 @@ export const initializeItemsList = () => (dispatch) => {
       let currentDateTime = moment().format();
       axios(omdbEndpoint).then(({data}) => {
         let appendedProps = {
+          status: 'active',
           lastFetched: currentDateTime,
           dateAdded: currentDateTime,
           name: data.Title,
@@ -91,6 +93,12 @@ export const addItem = (item) => (dispatch) => {
     dbItems.push({name: item.Title});
   }
 }
+
+export const archiveItem = (key) => (dispatch) =>
+  dbItems.child(key).update({ status: 'archived' });
+
+export const unarchiveItem = (key) => (dispatch) =>
+  dbItems.child(key).update({ status: 'active' });
 
 export const deleteItem = (key) => (dispatch) => 
   dbItems.child(key).remove();
@@ -140,4 +148,19 @@ export const activateAddItem = () => (dispatch) =>
 export const cancelAddItem = () => (dispatch) =>
   dispatch({
     type: 'ADD_ITEM_FORM_CANCEL'
+  });
+
+export const showActiveList = () => (dispatch) =>
+  dispatch({
+    type: 'FILTER_DISPLAY_ACTIVE'
+  });
+
+export const showArchivedList = () => (dispatch) =>
+  dispatch({
+    type: 'FILTER_DISPLAY_ARCHIVED'
+  });
+
+export const showFullList = () => (dispatch) =>
+  dispatch({
+    type: 'FILTER_DISPLAY_ALL'
   });

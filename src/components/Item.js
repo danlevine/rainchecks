@@ -14,6 +14,9 @@ class Item extends Component {
 
   render() {
     const { onDeleteClick,
+            onArchiveClick,
+            onUnarchiveClick,
+            status,
             name,
             year,
             rated,
@@ -65,6 +68,9 @@ class Item extends Component {
           </div>
           <div className="item__footer">
             <button className="item__btn-delete item__footer-btn" onClick={onDeleteClick}>Delete Movie</button>
+            {status === 'active' ?
+              <button className="item__btn-delete item__footer-btn" onClick={onArchiveClick}>Archive Movie</button> :
+              <button className="item__btn-delete item__footer-btn" onClick={onUnarchiveClick}>Unarchive Movie</button>}
             <button className="item__btn-moreinfo item__footer-btn" onClick={this.toggleExpandState}>{`${moreInfoBtnTxt} Details`}</button>
           </div>
         </div>

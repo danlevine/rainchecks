@@ -1,7 +1,35 @@
-const items = (state = {}, action) => {
+const initialState = {
+  item: [],
+  filteredItems: [],
+  filter: "active"
+};
+
+const items = (state = initialState, action) => {
   switch (action.type) {
     case 'FETCH_ITEMS_SUCCESS':
-      return action.payload;
+      return {
+        ...state,
+        items: action.payload,
+        filteredItems: _.filter(action.payload, item => item.status === state.filter)
+      };
+    case 'FILTER_DISPLAY_ALL':
+      return {
+        ...state,
+        filteredItems: state.items,
+        filter: "all"
+      };
+    case 'FILTER_DISPLAY_ACTIVE':
+      return {
+        ...state,
+        filteredItems: _.filter(state.items, item => item.status === 'active'),
+        filter: "active"
+      };
+    case 'FILTER_DISPLAY_ARCHIVED':
+      return {
+        ...state,
+        filteredItems: _.filter(state.items, item => item.status === 'archived'),
+        filter: "archived"
+      };
   }
 
   return state;

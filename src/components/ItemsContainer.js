@@ -11,7 +11,7 @@ class ItemsContainer extends Component {
   }
 
   render() {
-    const { deleteItem, items, isFetching } = this.props;
+    const { archiveItem, unarchiveItem, deleteItem, items, isFetching } = this.props;
     if (isFetching) {
       return (
         <div className="spinner spinner-dark">
@@ -22,6 +22,8 @@ class ItemsContainer extends Component {
     return (
       <ItemList
         items={items}
+        onArchiveClick={archiveItem}
+        onUnarchiveClick={unarchiveItem}
         onDeleteClick={deleteItem} 
       />
     );
