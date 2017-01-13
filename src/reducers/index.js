@@ -6,7 +6,7 @@ const rcApp = combineReducers({
   items,
   suggestions,
   isFetching,
-  isAddFormActive
+  isAddFormActive,
 });
 
 export default rcApp;
