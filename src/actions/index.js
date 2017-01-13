@@ -20,7 +20,7 @@ export const initializeItemsList = () => (dispatch) => {
     type: 'FETCH_ITEMS_REQUEST',
   });
 
-  dbItems.on('value', snapshot => {
+  dbItems.on('value', (snapshot) => {
     // convert movie list object into array for processing
     const movieArray = _.values(snapshot.val());
     const sortedMovieArray = movieArray.sort((a, b) => moment(b.dateAdded) - moment(a.dateAdded));
@@ -30,21 +30,21 @@ export const initializeItemsList = () => (dispatch) => {
     });
   });
 
-  dbItems.on('child_added', snapshot => {
+  dbItems.on('child_added', (snapshot) => {
     const currentItem = snapshot.val();
 
     // Copy item key into object for convenience when iterating through items
     if (!currentItem.key) {
-      db.ref('items/' + snapshot.key).update({
+      db.ref(`items/${snapshot.key}`).update({
         key: snapshot.key,
       });
     }
     if (!currentItem.lastFetched) {
+      let omdbEndpoint;
       if (currentItem.imdbID) {
-        var omdbEndpoint = 'https://www.omdbapi.com/?i=' + currentItem.imdbID + '&y=&plot=short&r=json&type=movie&tomatoes=true';
-      }
-      else {
-        var omdbEndpoint = 'https://www.omdbapi.com/?t=' + currentItem.name.replace(/\s/g, '+') + '&y=&plot=short&r=json&type=movie&tomatoes=true';
+        omdbEndpoint = `https://www.omdbapi.com/?i=${currentItem.imdbID}&y=&plot=short&r=json&type=movie&tomatoes=true`;
+      } else {
+        omdbEndpoint = `https://www.omdbapi.com/?t=${currentItem.name.replace(/\s/g, '+')}&y=&plot=short&r=json&type=movie&tomatoes=true`;
       }
 
       const currentDateTime = moment().format();
@@ -71,8 +71,8 @@ export const initializeItemsList = () => (dispatch) => {
           tomatoConsensus: data.tomatoConsensus,
           imdbID: data.imdbID,
         };
-        db.ref('items/' + snapshot.key).update(appendedProps);
-      }).catch(error => {
+        db.ref(`items/${snapshot.key}`).update(appendedProps);
+      }).catch((error) => {
         // TODO: add error handling mechanism
         console.log(error); // eslint-disable-line no-console
       });
@@ -83,30 +83,19 @@ export const initializeItemsList = () => (dispatch) => {
 export const addItem = item => (dispatch) => {
   if (typeof item === 'object') {
     dbItems.push({ name: item.Title, imdbID: item.imdbID });
-  }
-  else {
+  } else {
     dbItems.push({ name: item.Title });
   }
 };
 
-export const archiveItem = key => dispatch =>
+export const archiveItem = key => (dispatch) =>
   dbItems.child(key).update({ status: 'archived' });
 
-export const unarchiveItem = key => dispatch =>
+export const unarchiveItem = key => (dispatch) =>
   dbItems.child(key).update({ status: 'active' });
 
-export const deleteItem = key => dispatch =>
+export const deleteItem = key => (dispatch) =>
   dbItems.child(key).remove();
-
-export const loadSuggestions = value => (dispatch) => {
-  dispatch(loadSuggestionsBegin());
-
-  const omdbEndpoint = 'https://www.omdbapi.com/?s=' + value + '&type=movie';
-
-  axios(omdbEndpoint).then(({ data }) => {
-    dispatch(maybeUpdateSuggestions(data.Search || [], value));
-  });
-};
 
 export const updateInputValue = value => (dispatch) => {
   dispatch({
@@ -132,6 +121,16 @@ export const maybeUpdateSuggestions = (suggestions, value) => (dispatch) => {
     type: 'MAYBE_UPDATE_SUGGESTIONS',
     suggestions,
     value,
+  });
+};
+
+export const loadSuggestions = value => (dispatch) => {
+  dispatch(loadSuggestionsBegin());
+
+  const omdbEndpoint = `https://www.omdbapi.com/?s=${value}&type=movie`;
+
+  axios(omdbEndpoint).then(({ data }) => {
+    dispatch(maybeUpdateSuggestions(data.Search || [], value));
   });
 };
 
