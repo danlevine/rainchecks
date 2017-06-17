@@ -31,10 +31,12 @@ export const initializeItemsList = () => (dispatch) => {
   });
 
   dbItems.on('child_added', (snapshot) => {
+
     const currentItem = snapshot.val();
 
     // Copy item key into object for convenience when iterating through items
     if (!currentItem.key) {
+      currentItem.key = snapshot.key;
       db.ref(`items/${snapshot.key}`).update({
         key: snapshot.key,
       });
@@ -55,6 +57,7 @@ const fetchMovieDetailsFromTMDB = (currentItem) => {
     );
 };
 
+// TODO: look into removing/replacing OMDB
 const fetchMovieDetailsFromOMDB = (currentItem) => {
   return dispatch =>
     axios(
@@ -67,7 +70,7 @@ const fetchMovieDetailsFromOMDB = (currentItem) => {
 const doFetchExternalMovieData = (currentItem) => {
   return dispatch => Promise.all([
     dispatch(fetchMovieDetailsFromTMDB(currentItem)),
-    dispatch(fetchMovieDetailsFromOMDB(currentItem)),
+    // dispatch(fetchMovieDetailsFromOMDB(currentItem)),
   ]);
 };
 
@@ -98,6 +101,7 @@ const fetchMovieDetails = (item) => (dispatch) => {
       crew: data.credits.crew,
       idImdb: data.imdb_id,
     };
+
     db.ref(`items/${item.key}`).update(appendedProps);
 
     dispatch(doFetchExternalMovieData(data)).then(() => {
@@ -110,6 +114,7 @@ const fetchMovieDetails = (item) => (dispatch) => {
 };
 
 export const addItem = item => (dispatch) => {
+
   if (typeof item === 'object') {
     dbItems.push({
       name: item.title,
