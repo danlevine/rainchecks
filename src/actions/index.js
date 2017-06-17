@@ -40,51 +40,87 @@ export const initializeItemsList = () => (dispatch) => {
       });
     }
     if (!currentItem.lastFetched) {
-      let omdbEndpoint;
-      if (currentItem.imdbID) {
-        omdbEndpoint = `https://www.omdbapi.com/?i=${currentItem.imdbID}&y=&plot=short&r=json&type=movie&tomatoes=true`;
-      } else {
-        omdbEndpoint = `https://www.omdbapi.com/?t=${currentItem.name.replace(/\s/g, '+')}&y=&plot=short&r=json&type=movie&tomatoes=true`;
-      }
-
-      const currentDateTime = moment().format();
-      axios(omdbEndpoint).then(({ data }) => {
-        const appendedProps = {
-          status: 'active',
-          lastFetched: currentDateTime,
-          dateAdded: currentDateTime,
-          name: data.Title,
-          year: data.Year,
-          rated: data.Rated,
-          runtime: data.Runtime,
-          genre: data.Genre,
-          director: data.Director,
-          actors: data.Actors,
-          description: data.Plot,
-          country: data.Country,
-          awards: data.Awards,
-          poster: data.Poster,
-          scoreMetacritic: data.Metascore,
-          scoreImdb: data.imdbRating,
-          scoreTomato: data.tomatoMeter,
-          scoreTomatoUser: data.tomatoUserMeter,
-          tomatoConsensus: data.tomatoConsensus,
-          imdbID: data.imdbID,
-        };
-        db.ref(`items/${snapshot.key}`).update(appendedProps);
-      }).catch((error) => {
-        // TODO: add error handling mechanism
-        console.log(error); // eslint-disable-line no-console
-      });
+      // let omdbEndpoint, tmdbEndpoint;
+      fetchMovieDetails(currentItem)(dispatch);
     }
+  });
+};
+
+const fetchMovieDetailsFromTMDB = (currentItem) => {
+  return dispatch =>
+    axios(
+      `https://api.themoviedb.org/3/movie/${currentItem.id}?api_key=6a6b532ea6bf19c0c8430de484d28759&language=en-US&append_to_response=videos,releases`
+    ).then(
+      response => console.log(response)
+    );
+};
+
+const fetchMovieDetailsFromOMDB = (currentItem) => {
+  return dispatch =>
+    axios(
+      `http://www.omdbapi.com/?t=${currentItem.title.replace(/\s/g, '+')}&y=&plot=short&r=json&type=movie&tomatoes=true`
+    ).then(
+      response => console.log(response)
+    );
+};
+
+const doFetchExternalMovieData = (currentItem) => {
+  return dispatch => Promise.all([
+    dispatch(fetchMovieDetailsFromTMDB(currentItem)),
+    dispatch(fetchMovieDetailsFromOMDB(currentItem)),
+  ]);
+};
+
+export const refreshAllItems = () => (dispatch) => {
+
+};
+
+const fetchMovieDetails = (item) => (dispatch) => {
+  const tmdbMovieDetailsEndpoint = `https://api.themoviedb.org/3/movie/${item.idTmdb}?api_key=6a6b532ea6bf19c0c8430de484d28759&language=en-US&append_to_response=videos,releases,credits`;
+  const currentDateTime = moment().format();
+
+  axios(tmdbMovieDetailsEndpoint).then(({ data }) => {
+    const appendedProps = {
+      status: 'active',
+      lastFetched: currentDateTime,
+      dateAdded: currentDateTime,
+      idTmdb: data.id,
+      name: data.title,
+      overview: data.overview,
+      imagePosterPath: data.poster_path,
+      imageBackdropPath: data.backdrop_path,
+      releaseDate: data.release_date,
+      releases: data.releases,
+      videos: data.videos,
+      runtime: data.runtime,
+      genres: data.genres,
+      cast: data.credits.cast,
+      crew: data.credits.crew,
+      idImdb: data.imdb_id,
+    };
+    db.ref(`items/${item.key}`).update(appendedProps);
+
+    dispatch(doFetchExternalMovieData(data)).then(() => {
+      console.log('I did everything!');
+    });
+  }).catch((error) => {
+    // TODO: add error handling mechanism
+    console.log(error); // eslint-disable-line no-console
   });
 };
 
 export const addItem = item => (dispatch) => {
   if (typeof item === 'object') {
-    dbItems.push({ name: item.Title, imdbID: item.imdbID });
+    dbItems.push({
+      name: item.title,
+      idTmdb: item.id,
+      overview: item.overview,
+      imagePosterPath: item.poster_path,
+      imageBackdropPath: item.backdrop_path,
+      releaseDate: item.release_date,
+    });
   } else {
-    dbItems.push({ name: item.Title });
+    dbItems.push({ name: item.title });
   }
 };
 
@@ -125,13 +161,17 @@ export const maybeUpdateSuggestions = (suggestions, value) => (dispatch) => {
 };
 
 export const loadSuggestions = value => (dispatch) => {
-  dispatch(loadSuggestionsBegin());
+  if (!value) {
+    dispatch(clearSuggestions());
+  } else {
+    dispatch(loadSuggestionsBegin());
 
-  const omdbEndpoint = `https://www.omdbapi.com/?s=${value}&type=movie`;
+    const omdbEndpoint = `http://api.themoviedb.org/3/search/movie?api_key=6a6b532ea6bf19c0c8430de484d28759&language=en-US&query=${value}&page=1&include_adult=false`;
 
-  axios(omdbEndpoint).then(({ data }) => {
-    dispatch(maybeUpdateSuggestions(data.Search || [], value));
-  });
+    axios(omdbEndpoint).then(({ data }) => {
+      dispatch(maybeUpdateSuggestions(data.results || [], value));
+    });
+  }
 };
 
 export const activateAddItem = () => dispatch =>
@@ -158,3 +198,4 @@ export const showFullList = () => dispatch =>
   dispatch({
     type: 'FILTER_DISPLAY_ALL',
   });
+

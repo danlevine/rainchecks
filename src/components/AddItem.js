@@ -68,7 +68,10 @@ const renderInputComponent = inputProps => (
 
 const renderSuggestion = suggestion => (
   <div className="react-autosuggest__item">
-    <h3>{suggestion.Title} - <small>{suggestion.Year}</small></h3>
+    <h3>{suggestion.title} - <small>{suggestion.release_date}</small></h3>
+    <img src={`http://image.tmdb.org/t/p/w185/${suggestion.poster_path}`} />
+    <img src={`http://image.tmdb.org/t/p/w185/${suggestion.backdrop_path}`} />
+    <p>{suggestion.overview}</p>
   </div>
 );
 
