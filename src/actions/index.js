@@ -61,7 +61,7 @@ const fetchMovieDetailsFromTMDB = (currentItem) => {
 const fetchMovieDetailsFromOMDB = (currentItem) => {
   return dispatch =>
     axios(
-      `http://www.omdbapi.com/?t=${currentItem.title.replace(/\s/g, '+')}&y=&plot=short&r=json&type=movie&tomatoes=true`
+      `https://www.omdbapi.com/?t=${currentItem.title.replace(/\s/g, '+')}&y=&plot=short&r=json&type=movie&tomatoes=true`
     ).then(
       response => console.log(response)
     );
@@ -171,7 +171,7 @@ export const loadSuggestions = value => (dispatch) => {
   } else {
     dispatch(loadSuggestionsBegin());
 
-    const omdbEndpoint = `http://api.themoviedb.org/3/search/movie?api_key=6a6b532ea6bf19c0c8430de484d28759&language=en-US&query=${value}&page=1&include_adult=false`;
+    const omdbEndpoint = `https://api.themoviedb.org/3/search/movie?api_key=6a6b532ea6bf19c0c8430de484d28759&language=en-US&query=${value}&page=1&include_adult=false`;
 
     axios(omdbEndpoint).then(({ data }) => {
       dispatch(maybeUpdateSuggestions(data.results || [], value));
