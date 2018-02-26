@@ -15,75 +15,14 @@ firebase.initializeApp(config);
 const db = firebase.database();
 const dbItems = db.ref('items');
 
-export const initializeItemsList = () => (dispatch) => {
-  dispatch({
-    type: 'FETCH_ITEMS_REQUEST',
-  });
-
-  dbItems.on('value', (snapshot) => {
-    // convert movie list object into array for processing
-    const movieArray = _.values(snapshot.val());
-    const sortedMovieArray = movieArray.sort((a, b) => moment(b.dateAdded) - moment(a.dateAdded));
-    dispatch({
-      type: 'FETCH_ITEMS_SUCCESS',
-      payload: sortedMovieArray,
-    });
-  });
-
-  dbItems.on('child_added', (snapshot) => {
-
-    const currentItem = snapshot.val();
-
-    // Copy item key into object for convenience when iterating through items
-    if (!currentItem.key) {
-      currentItem.key = snapshot.key;
-      db.ref(`items/${snapshot.key}`).update({
-        key: snapshot.key,
-      });
-    }
-    if (!currentItem.lastFetched) {
-      // let omdbEndpoint, tmdbEndpoint;
-      fetchMovieDetails(currentItem)(dispatch);
-    }
-  });
-};
-
-const fetchMovieDetailsFromTMDB = (currentItem) => {
-  return dispatch =>
-    axios(
-      `https://api.themoviedb.org/3/movie/${currentItem.id}?api_key=6a6b532ea6bf19c0c8430de484d28759&language=en-US&append_to_response=videos,releases`
-    ).then(
-      response => console.log(response)
-    );
-};
-
-// TODO: look into removing/replacing OMDB
-const fetchMovieDetailsFromOMDB = (currentItem) => {
-  return dispatch =>
-    axios(
-      `https://www.omdbapi.com/?t=${currentItem.title.replace(/\s/g, '+')}&y=&plot=short&r=json&type=movie&tomatoes=true`
-    ).then(
-      response => console.log(response)
-    );
-};
-
-const doFetchExternalMovieData = (currentItem) => {
-  return dispatch => Promise.all([
-    dispatch(fetchMovieDetailsFromTMDB(currentItem)),
-    // dispatch(fetchMovieDetailsFromOMDB(currentItem)),
-  ]);
-};
-
-export const refreshAllItems = () => (dispatch) => {
-
-};
-
-const fetchMovieDetails = (item) => (dispatch) => {
+const fetchMovieDetails = item => (dispatch) => {
   const tmdbMovieDetailsEndpoint = `https://api.themoviedb.org/3/movie/${item.idTmdb}?api_key=6a6b532ea6bf19c0c8430de484d28759&language=en-US&append_to_response=videos,releases,credits`;
+  const omdbMovieDetailsEndpoint = imdbId => `http://www.omdbapi.com/?i=${imdbId}&apikey=b73d8c25`;
   const currentDateTime = moment().format();
+  let movieData = {};
 
   axios(tmdbMovieDetailsEndpoint).then(({ data }) => {
-    const appendedProps = {
+    movieData = {
       status: 'active',
       lastFetched: currentDateTime,
       dateAdded: currentDateTime,
@@ -102,19 +41,72 @@ const fetchMovieDetails = (item) => (dispatch) => {
       idImdb: data.imdb_id,
     };
 
-    db.ref(`items/${item.key}`).update(appendedProps);
+    // Using fetched imdb id, look up ratings with OMDB
+    return axios(omdbMovieDetailsEndpoint(data.imdb_id));
+  }).then((response) => {
+    const ratings = response.data.Ratings;
+    const ratingsObj = {};
+    ratings.forEach(i => ratingsObj[i.Source] = i.Value);
 
-    dispatch(doFetchExternalMovieData(data)).then(() => {
-      console.log('I did everything!');
-    });
+    if (ratingsObj['Internet Movie Database']) {
+      movieData.scoreImdb = ratingsObj['Internet Movie Database'].replace(/\/10$/, '');
+    }
+    if (ratingsObj['Rotten Tomatoes']) {
+      movieData.scoreTomato = ratingsObj['Rotten Tomatoes'].replace(/%$/, '');
+    }
+    if (ratingsObj['Metacritic']) {
+      movieData.scoreMetacritic = ratingsObj['Metacritic'].replace(/\/100$/, '');
+    }
+
+    db.ref(`items/${item.key}`).update(movieData);
   }).catch((error) => {
     // TODO: add error handling mechanism
     console.log(error); // eslint-disable-line no-console
   });
 };
 
-export const addItem = item => (dispatch) => {
+export const initializeItemsList = () => (dispatch) => {
+  dispatch({
+    type: 'FETCH_ITEMS_REQUEST',
+  });
 
+  dbItems.on('value', (snapshot) => {
+    // convert movie list object into array for processing
+    const movieArray = _.values(snapshot.val());
+    const sortedMovieArray = movieArray.sort((a, b) => moment(b.dateAdded) - moment(a.dateAdded));
+    dispatch({
+      type: 'FETCH_ITEMS_SUCCESS',
+      payload: sortedMovieArray,
+    });
+  });
+
+  /*
+   *  `child_added` gets called when adding an item but ALSO
+   *  when initializing the app (on each item added into the list)
+   */
+  dbItems.on('child_added', (snapshot) => {
+    const currentItem = snapshot.val();
+
+    // Copy item key into object for convenience when iterating through items
+    if (!currentItem.key) {
+      currentItem.key = snapshot.key;
+      db.ref(`items/${snapshot.key}`).update({
+        key: snapshot.key,
+      });
+    }
+
+    // Look up movie info if haven't before
+    if (!currentItem.lastFetched) {
+      fetchMovieDetails(currentItem)(dispatch);
+    }
+  });
+};
+
+export const refreshAllItems = () => (dispatch) => {
+
+};
+
+export const addItem = item => (dispatch) => {
   if (typeof item === 'object') {
     dbItems.push({
       name: item.title,
