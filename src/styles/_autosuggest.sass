@@ -4,23 +4,34 @@
     max-width: 660px
     margin: 0 auto
     padding: 0
-    color: white
-
-    img
-      max-width: 40px
-      vertical-align: top
-      padding-right: 15px
+    color: #fff
 
 .react-autosuggest__suggestion
-  margin-bottom: 30px
+  margin-bottom: 40px
   cursor: pointer
   border-bottom: 3px solid transparent
 
   h3
     display: inline
-    font-weight: 400
-    border-bottom: 2px dotted transparent
+    font-size: 22px
+    font-weight: 600
 
 .react-autosuggest__suggestion--focused
-  h3
-    border-bottom-color: #aaa
+  outline: 2px dashed #555
+  outline-offset: 6px
+
+.react-autosuggest__item
+  display: flex
+  align-items: flex-start;
+
+  img
+    max-width: 120px
+    margin-right: 10px
+
+  p
+    font-size: 12px
+    font-weight: 100
+
+.react-autosuggest__item-info
+  display: flex
+  flex-direction: column

@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Autosuggest from 'react-autosuggest';
@@ -25,7 +24,7 @@ class AddItem extends Component {
       onChange,
       isLoading,
       autoFocus: true,
-      className: 'add-item-form__input'
+      className: 'add-item-form__input',
     };
 
     return (
@@ -40,22 +39,24 @@ class AddItem extends Component {
           renderSuggestion={renderSuggestion}
           shouldRenderSuggestions={shouldRenderSuggestions}
           alwaysRenderSuggestions={true}
-          inputProps={inputProps} />
+          inputProps={inputProps}
+        />
         <button
           type="button"
           className="btn-action btn-round"
-          onClick={onAddCancel}>
-          <i className="fa fa-times"></i>
+          onClick={onAddCancel}
+        >
+          <i className="fa fa-times" />
         </button>
       </div>
     );
-  };
+  }
 }
 
 const getSuggestionValue = suggestion => suggestion.Title;
 
 const renderInputComponent = inputProps => (
-  <div className='add-item-form__input-container'>
+  <div className="add-item-form__input-container">
     <input {...inputProps} />
     { inputProps.isLoading ?
       <div className="spinner spinner-light">
@@ -68,25 +69,32 @@ const renderInputComponent = inputProps => (
 
 const renderSuggestion = suggestion => (
   <div className="react-autosuggest__item">
-    <h3>{suggestion.title} - <small>{suggestion.release_date}</small></h3>
-    <img src={`http://image.tmdb.org/t/p/w185/${suggestion.poster_path}`} />
-    <img src={`http://image.tmdb.org/t/p/w185/${suggestion.backdrop_path}`} />
-    <p>{suggestion.overview}</p>
+    {suggestion.poster_path &&
+      <img
+        src={`http://image.tmdb.org/t/p/w185/${suggestion.poster_path}`}
+        alt={`Movie poster of ${suggestion.title}`}
+      />
+    }
+    <div className="react-autosuggest__item-info">
+      <h3>{suggestion.title}</h3>
+      <span>{suggestion.release_date}</span>
+      <p>{suggestion.overview}</p>
+    </div>
   </div>
 );
 
 const shouldRenderSuggestions = value => value.trim().length >= 2;
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const { value, suggestions, isLoading } = state;
   return {
     value,
     suggestions,
-    isLoading
+    isLoading,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     onChange(event, { newValue }) {
       dispatch(updateInputValue(newValue));
@@ -106,8 +114,8 @@ const mapDispatchToProps = dispatch => {
 };
 
 AddItem = connect(
-  mapStateToProps, 
-  mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps,
 )(AddItem);
 
 export default AddItem;
