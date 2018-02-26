@@ -77,7 +77,7 @@ const renderSuggestion = suggestion => (
     }
     <div className="react-autosuggest__item-info">
       <h3>{suggestion.title}</h3>
-      <span>{suggestion.release_date}</span>
+      <span>{suggestion.release_date.substring(0,4)}</span>
       <p>{suggestion.overview}</p>
     </div>
   </div>
