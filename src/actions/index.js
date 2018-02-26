@@ -17,7 +17,7 @@ const dbItems = db.ref('items');
 
 const fetchMovieDetails = item => (dispatch) => {
   const tmdbMovieDetailsEndpoint = `https://api.themoviedb.org/3/movie/${item.idTmdb}?api_key=6a6b532ea6bf19c0c8430de484d28759&language=en-US&append_to_response=videos,releases,credits`;
-  const omdbMovieDetailsEndpoint = imdbId => `http://www.omdbapi.com/?i=${imdbId}&apikey=b73d8c25`;
+  const omdbMovieDetailsEndpoint = imdbId => `https://www.omdbapi.com/?i=${imdbId}&apikey=b73d8c25`;
   const currentDateTime = moment().format();
   let movieData = {};
 
