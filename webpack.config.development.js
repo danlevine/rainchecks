@@ -1,6 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
@@ -31,6 +32,12 @@ module.exports = {
     new ExtractTextPlugin('stylesheet.css'),
     new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
-    })
+    }),
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      defaultSizes: 'gzip',
+      reportFilename: 'webpackBundleAnalyzer-report.html',
+      openAnalyzer: false,
+    }), // webpack-bundle-analyzer
   ]
 };
