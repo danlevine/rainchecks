@@ -1,22 +1,39 @@
-@import 'assets/fonts/geomanist/geomanist';
-
 @font-face {
   font-family: 'BTRaindrops';
-  src: url('assets/fonts/blessingsthroughraindrops/blessingsthroughraindrops-webfont.woff2');
-  src: url('assets/fonts/blessingsthroughraindrops/blessingsthroughraindrops-webfont.eot?#iefix') format('embedded-opentype'),
-       url('assets/fonts/blessingsthroughraindrops/blessingsthroughraindrops-webfont.woff2') format('woff2'),
-       url('assets/fonts/blessingsthroughraindrops/blessingsthroughraindrops-webfont.woff') format('woff'),
-       url('assets/fonts/blessingsthroughraindrops/blessingsthroughraindrops-webfont.ttf') format('truetype'),
-       url('assets/fonts/blessingsthroughraindrops/blessingsthroughraindrops-webfont.svg#blessings_through_raindropsRg') format('svg');
+  src: url('assets/fonts/archived/blessingsthroughraindrops/blessingsthroughraindrops-webfont.woff2');
+  src: url('assets/fonts/archived/blessingsthroughraindrops/blessingsthroughraindrops-webfont.woff2') format('woff2'),
+       url('assets/fonts/archived/blessingsthroughraindrops/blessingsthroughraindrops-webfont.woff') format('woff'),
+       url('assets/fonts/archived/blessingsthroughraindrops/blessingsthroughraindrops-webfont.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
-// @font-face {
-//   font-family: 'SmartKid';
-//   src: url('assets/fonts/smart_kid/smart_kid-webfont.woff2') format('woff2'),
-//        url('assets/fonts/smart_kid/smart_kid-webfont.woff') format('woff'),
-//        url('assets/fonts/smart_kid/smart_kid-webfont.otf') format('opentype');
-//   font-weight: normal;
-//   font-style: normal;
-// }
+/////////
+// MIXINS
+/////////
+
+@mixin FontFace($name, $path, $weight: 400, $style: normal) {
+  @font-face {
+    font-family: $name;
+    src: url('#{$path}.woff2') format('woff2'),
+         url('#{$path}.woff') format('woff'),
+         url('#{$path}.ttf') format('truetype');
+    font-weight: $weight;
+    font-style: $style;
+  }
+}
+ 
+@mixin FontAfterDownload($familyName, $fallbacks) {
+  .fonts-loaded & {
+    font-family: join($familyName, $fallbacks, comma);
+  }
+}
+ 
+@mixin FontStackPrimary($fallbackStack: (sans-serif)) {
+  font-family: $fallbackStack;
+  @include FontAfterDownload(Geomanist, $fallbackStack);
+}
+ 
+@include FontFace(Geomanist, 'assets/fonts/geomanist/geomanist-regular', 400);
+@include FontFace(Geomanist, 'assets/fonts/geomanist/geomanist-light', 300);
+@include FontFace(Geomanist, 'assets/fonts/geomanist/geomanist-medium', 600);

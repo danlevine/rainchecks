@@ -4,11 +4,46 @@
     <title>rain checks - time to cash in</title>
     <meta name=viewport content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="/static/stylesheet.css" />
+    <script>
+      (function() {
+        var noPromises = (typeof window.Promise === 'undefined');
+        var noFontLoadingApi = (typeof document.fonts === 'undefined');
+        var fontsCached = (sessionStorage.fontsCached && sessionStorage.fontsCached.toLowerCase() !== 'false');
+
+        if (noPromises || noFontLoadingApi || fontsCached) {
+          document.documentElement.className += ' fonts-loaded';
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id='root'>
     </div>
     <script src="/static/bundle.js"></script>
     <script src="https://use.fontawesome.com/e14786348f.js"></script>
+    <script>
+      (function() {
+        var noPromises = (typeof window.Promise === 'undefined');
+        var noFontLoadingApi = (typeof document.fonts === 'undefined');
+        var fontsCached = (sessionStorage.fontsCached && sessionStorage.fontsCached.toLowerCase() !== 'false');
+       
+        if (noPromises || noFontLoadingApi || fontsCached) return;
+
+        // Critical FOFT
+        Promise.all([
+          document.fonts.load('400 1em Geomanist')
+        ])
+        .then(function() {
+          document.documentElement.className += " fonts-loaded";
+          return Promise.all([
+            document.fonts.load('300 1em Geomanist'),
+            document.fonts.load('600 1em Geomanist'),
+          ]);
+        })
+        .then(function() {
+          sessionStorage.fontsCached = 'true';
+        });
+      })();
+    </script>
   </body>
 </html>
