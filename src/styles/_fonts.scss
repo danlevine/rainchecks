@@ -1,13 +1,3 @@
-@font-face {
-  font-family: 'BTRaindrops';
-  src: url('assets/fonts/archived/blessingsthroughraindrops/blessingsthroughraindrops-webfont.woff2');
-  src: url('assets/fonts/archived/blessingsthroughraindrops/blessingsthroughraindrops-webfont.woff2') format('woff2'),
-       url('assets/fonts/archived/blessingsthroughraindrops/blessingsthroughraindrops-webfont.woff') format('woff'),
-       url('assets/fonts/archived/blessingsthroughraindrops/blessingsthroughraindrops-webfont.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
 /////////
 // MIXINS
 /////////
@@ -33,7 +23,3 @@
   font-family: $fallbackStack;
   @include FontAfterDownload(Geomanist, $fallbackStack);
 }
- 
-@include FontFace(Geomanist, 'assets/fonts/geomanist/geomanist-regular', 400);
-@include FontFace(Geomanist, 'assets/fonts/geomanist/geomanist-light', 300);
-@include FontFace(Geomanist, 'assets/fonts/geomanist/geomanist-medium', 600);

@@ -18,11 +18,11 @@ module.exports = {
     loaders: [
       { test: /\.js$/, loaders: ['react-hot', 'babel'], include: path.join(__dirname, 'src') },
       { test: /\.sass$/, loader: ExtractTextPlugin.extract('css?sourceMap!sass?sourceMap') },
-      { test: /\.svg$/, loader: 'url?limit=2000&mimetype=image/svg+xml&name=fonts/[name].[ext]', include: path.join(__dirname, 'src/assets/fonts') },
-      { test: /\.woff$/, loader: 'url?limit=2000&mimetype=application/font-woff&name=fonts/[name].[ext]' },
-      { test: /\.woff2$/, loader: 'url?limit=2000&mimetype=application/font-woff2&name=fonts/[name].[ext]' },
-      { test: /\.[ot]tf$/, loader: 'url?limit=2000&mimetype=application/octet-stream&name=fonts/[name].[ext]' },
-      { test: /\.eot$/, loader: 'url?limit=2000&mimetype=application/vnd.ms-fontobject&name=fonts/[name].[ext]' },
+      {
+        test: /\.(woff|woff2|eot|ttf)$/,
+        exclude: /node_modules/,
+        loader: 'file-loader?limit=1024&name=static/fonts/[name].[ext]'
+      },
       { test: /\.svg$/, loader: 'svg-url-loader' }
     ]
   },

@@ -1,0 +1,5 @@
+@import '../../styles/fonts';
+
+@include FontFace(Geomanist, 'assets/fonts/geomanist-regular', 400);
+@include FontFace(Geomanist, 'assets/fonts/geomanist-light', 300);
+@include FontFace(Geomanist, 'assets/fonts/geomanist-medium', 600);

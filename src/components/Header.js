@@ -16,9 +16,7 @@ class Header extends Component {
         {this.props.items.filter === 'active' ?
           <button className="header__show-archived-list-btn" onClick={showArchivedList}><i className="fa fa-archive"></i></button> :
           <button className="header__show-active-list-btn" onClick={showActiveList}><i className="fa fa-ticket"></i></button>}
-        <div className="header__logo-container">
-          <h1>rain<br/>checks</h1>
-        </div>
+        <div className="header__logo-container" />
       </header>
     )
   }
