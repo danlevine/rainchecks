@@ -21,7 +21,7 @@ module.exports = {
       {
         test: /\.(woff|woff2|eot|ttf)$/,
         exclude: /node_modules/,
-        loader: 'file-loader?limit=1024&name=static/fonts/[name].[ext]'
+        loader: 'file-loader?limit=1024&name=static/fonts/[name].[ext]&publicPath=../'
       },
       { test: /\.svg$/, loader: 'svg-url-loader' }
     ]
