@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import 'intersection-observer';
 
 class PosterImageLoader extends Component {
 //   constructor() {
