@@ -30,6 +30,22 @@ const items = (state = initialState, action) => {
         filteredItems: _.filter(state.items, item => item.status === 'archived'),
         filter: 'archived',
       };
+    case 'FILTER_DISPLAY_TOGGLE':
+      if (state.filter === 'active') {
+        return {
+          ...state,
+          filteredItems: _.filter(state.items, item => item.status === 'archived'),
+          filter: 'archived',
+        };
+      } else if (state.filter === 'archived') {
+        return {
+          ...state,
+          filteredItems: _.filter(state.items, item => item.status === 'active'),
+          filter: 'active',
+        };
+
+        return {...state};
+      }
     default:
       return state;
   }
