@@ -3,13 +3,7 @@ import HeaderMenu from "../components/HeaderMenu";
 
 const Header = () => (
   <header>
-    <div className="header__logo-container">
-      <h1>
-        rain
-        <br />
-        checks
-      </h1>
-    </div>
+    <div className="header__logo-container" />
     <HeaderMenu />
   </header>
 );

@@ -21,6 +21,7 @@ const fetchMovieDetails = item => (dispatch) => {
   const currentDateTime = moment().format();
   let movieData = {};
 
+  // Reset item (ex. unarchive) and grab latest data
   axios(tmdbMovieDetailsEndpoint).then(({ data }) => {
     movieData = {
       status: 'active',

@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
+import PosterImageLoader from './PosterImageLoader';
 
 class Item extends Component {
   constructor() {
@@ -9,6 +10,7 @@ class Item extends Component {
     };
     this.toggleExpandState = this.toggleExpandState.bind(this);
   }
+
   toggleExpandState() {
     this.setState({itemExpanded: !this.state.itemExpanded});
   }
@@ -46,7 +48,11 @@ class Item extends Component {
 
     return (
       <li className={`item${expandedClassStr}`}>
-        <img className="item__poster" src={`https://image.tmdb.org/t/p/w342${imagePosterPath}`} alt={`${name} movie poster`} />
+        <PosterImageLoader
+          className="item__poster"
+          src={`https://image.tmdb.org/t/p/w342${imagePosterPath}`}
+          alt={`${name} movie poster`}
+        />
         <div className="item__info-block">
           <div className="item__label">
             <h2 className="item__name">{name}</h2>
