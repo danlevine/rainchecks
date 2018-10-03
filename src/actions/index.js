@@ -192,6 +192,11 @@ export const showArchivedList = () => dispatch =>
     type: 'FILTER_DISPLAY_ARCHIVED',
   });
 
+export const toggleActiveArchivedList = () => dispatch =>
+  dispatch({
+    type: 'FILTER_DISPLAY_TOGGLE',
+  });
+
 export const showFullList = () => dispatch =>
   dispatch({
     type: 'FILTER_DISPLAY_ALL',
