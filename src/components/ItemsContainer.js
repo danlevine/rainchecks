@@ -23,30 +23,18 @@ class ItemsContainer extends Component {
 
   componentDidMount() {
     // If user was previously logged in, auto log-in
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        this.setState({ user });
-      }
-    });
+    this.props.checkForLoggedInUser();
 
+    // Load movie list data
     this.props.initializeItemsList();
   }
 
   login() {
-    auth.signInWithPopup(provider).then(result => {
-      const user = result.user;
-      this.setState({
-        user
-      });
-    });
+    this.props.userLogin();
   }
 
   logout() {
-    auth.signOut().then(() => {
-      this.setState({
-        user: null
-      });
-    });
+    this.props.userLogout();
   }
 
   render() {
@@ -58,25 +46,25 @@ class ItemsContainer extends Component {
       isFetching
     } = this.props;
 
-    if (this.state.user) {
+    if (false && this.state.user) {
       // logged in
-      return (
-        <div>
-          <button onClick={this.logout}>Log Out</button>
-          {isFetching ? (
-            <div className="spinner spinner-dark">
-              <span className="spinner__text">Loading...</span>
-            </div>
-          ) : (
-            <ItemList
-              items={items}
-              onArchiveClick={archiveItem}
-              onUnarchiveClick={unarchiveItem}
-              onDeleteClick={deleteItem}
-            />
-          )}
-        </div>
-      );
+      // return (
+      //   <div>
+      //     <button onClick={this.logout}>Log Out</button>
+      //     {isFetching ? (
+      //       <div className="spinner spinner-dark">
+      //         <span className="spinner__text">Loading...</span>
+      //       </div>
+      //     ) : (
+      //       <ItemList
+      //         items={items}
+      //         onArchiveClick={archiveItem}
+      //         onUnarchiveClick={unarchiveItem}
+      //         onDeleteClick={deleteItem}
+      //       />
+      //     )}
+      //   </div>
+      // );
     } else {
       // NOT logged in
       return (
@@ -86,6 +74,7 @@ class ItemsContainer extends Component {
             days!
           </h3>
           <button onClick={this.login}>Log In</button>
+          <button onClick={this.logout}>Log Out</button>
         </div>
       );
     }
