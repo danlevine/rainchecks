@@ -12,7 +12,11 @@ const config = {
 };
 firebase.initializeApp(config);
 const db = firebase.database();
-const dbItems = db.ref("items");
+
+const createUserDbRefFromState = getState => {
+  const { uid } = getState().user.currentUser;
+  return db.ref(`users/${uid}/movies`);
+};
 
 const fetchMovieDetails = item => dispatch => {
   const tmdbMovieDetailsEndpoint = `https://api.themoviedb.org/3/movie/${
@@ -77,12 +81,13 @@ const fetchMovieDetails = item => dispatch => {
     });
 };
 
-export const initializeItemsList = () => dispatch => {
+export const initializeItemsList = () => (dispatch, getState) => {
   dispatch({
     type: "FETCH_ITEMS_REQUEST"
   });
 
-  dbItems.on("value", snapshot => {
+  const dbUserMovies = createUserDbRefFromState(getState);
+  dbUserMovies.on("value", snapshot => {
     // convert movie list object into array for processing
     const movieArray = _.values(snapshot.val());
     const sortedMovieArray = movieArray.sort(
@@ -98,7 +103,7 @@ export const initializeItemsList = () => dispatch => {
    *  `child_added` gets called when adding an item but ALSO
    *  when initializing the app (on each item added into the list)
    */
-  dbItems.on("child_added", snapshot => {
+  dbUserMovies.on("child_added", snapshot => {
     const currentItem = snapshot.val();
 
     // Copy item key into object for convenience when iterating through items
@@ -118,9 +123,11 @@ export const initializeItemsList = () => dispatch => {
 
 export const refreshAllItems = () => dispatch => {};
 
-export const addItem = item => dispatch => {
+export const addItem = item => (dispatch, getState) => {
+  const dbUserMovies = createUserDbRefFromState(getState);
+
   if (typeof item === "object") {
-    db.ref("users/[userid]/movies").push({
+    dbUserMovies.push({
       name: item.title,
       idTmdb: item.id,
       overview: item.overview,
@@ -128,26 +135,25 @@ export const addItem = item => dispatch => {
       imageBackdropPath: item.backdrop_path,
       releaseDate: item.release_date
     });
-    // dbItems.push({
-    //   name: item.title,
-    //   idTmdb: item.id,
-    //   overview: item.overview,
-    //   imagePosterPath: item.poster_path,
-    //   imageBackdropPath: item.backdrop_path,
-    //   releaseDate: item.release_date,
-    // });
   } else {
-    dbItems.push({ name: item.title });
+    dbUserMovies.push({ name: item.title });
   }
 };
 
-export const archiveItem = key => dispatch =>
-  dbItems.child(key).update({ status: "archived" });
+export const archiveItem = key => (dispatch, getState) => {
+  const dbUserMovies = createUserDbRefFromState(getState);
+  dbUserMovies.child(key).update({ status: "archived" });
+};
 
-export const unarchiveItem = key => dispatch =>
-  dbItems.child(key).update({ status: "active" });
+export const unarchiveItem = key => (dispatch, getState) => {
+  const dbUserMovies = createUserDbRefFromState(getState);
+  dbUserMovies.child(key).update({ status: "active" });
+};
 
-export const deleteItem = key => dispatch => dbItems.child(key).remove();
+export const deleteItem = key => (dispatch, getState) => {
+  const dbUserMovies = createUserDbRefFromState(getState);
+  dbUserMovies.child(key).remove();
+};
 
 const provider = new firebase.auth.GoogleAuthProvider();
 const auth = firebase.auth();

@@ -26,7 +26,7 @@ class ItemsContainer extends Component {
     this.props.checkForLoggedInUser();
 
     // Load movie list data
-    this.props.initializeItemsList();
+    // this.props.initializeItemsList();
   }
 
   login() {
