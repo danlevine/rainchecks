@@ -1,50 +1,64 @@
+import _ from "lodash";
+
 const initialState = {
   item: [],
   filteredItems: [],
-  filter: 'active',
+  filter: "active"
 };
 
 const items = (state = initialState, action) => {
   switch (action.type) {
-    case 'FETCH_ITEMS_SUCCESS':
+    case "FETCH_ITEMS_SUCCESS":
       return {
         ...state,
         items: action.payload,
-        filteredItems: _.filter(action.payload, item => item.status === state.filter),
+        filteredItems: _.filter(
+          action.payload,
+          item => item.status === state.filter
+        )
       };
-    case 'FILTER_DISPLAY_ALL':
+    case "FILTER_DISPLAY_ALL":
       return {
         ...state,
         filteredItems: state.items,
-        filter: 'all',
+        filter: "all"
       };
-    case 'FILTER_DISPLAY_ACTIVE':
+    case "FILTER_DISPLAY_ACTIVE":
       return {
         ...state,
-        filteredItems: _.filter(state.items, item => item.status === 'active'),
-        filter: 'active',
+        filteredItems: _.filter(state.items, item => item.status === "active"),
+        filter: "active"
       };
-    case 'FILTER_DISPLAY_ARCHIVED':
+    case "FILTER_DISPLAY_ARCHIVED":
       return {
         ...state,
-        filteredItems: _.filter(state.items, item => item.status === 'archived'),
-        filter: 'archived',
+        filteredItems: _.filter(
+          state.items,
+          item => item.status === "archived"
+        ),
+        filter: "archived"
       };
-    case 'FILTER_DISPLAY_TOGGLE':
-      if (state.filter === 'active') {
+    case "FILTER_DISPLAY_TOGGLE":
+      if (state.filter === "active") {
         return {
           ...state,
-          filteredItems: _.filter(state.items, item => item.status === 'archived'),
-          filter: 'archived',
+          filteredItems: _.filter(
+            state.items,
+            item => item.status === "archived"
+          ),
+          filter: "archived"
         };
-      } else if (state.filter === 'archived') {
+      } else if (state.filter === "archived") {
         return {
           ...state,
-          filteredItems: _.filter(state.items, item => item.status === 'active'),
-          filter: 'active',
+          filteredItems: _.filter(
+            state.items,
+            item => item.status === "active"
+          ),
+          filter: "active"
         };
 
-        return {...state};
+        return { ...state };
       }
     default:
       return state;
@@ -55,10 +69,10 @@ export default items;
 
 export const isFetching = (state = false, action) => {
   switch (action.type) {
-    case 'FETCH_ITEMS_REQUEST':
+    case "FETCH_ITEMS_REQUEST":
       return true;
-    case 'FETCH_ITEMS_SUCCESS':
-    case 'FETCH_ITEMS_FAILURE':
+    case "FETCH_ITEMS_SUCCESS":
+    case "FETCH_ITEMS_FAILURE":
       return false;
     default:
       return state;
@@ -67,10 +81,10 @@ export const isFetching = (state = false, action) => {
 
 export const isAddFormActive = (state = false, action) => {
   switch (action.type) {
-    case 'ADD_ITEM_FORM_ACTIVATE':
+    case "ADD_ITEM_FORM_ACTIVATE":
       return true;
-    case 'ADD_ITEM_FORM_CANCEL':
-    case 'FETCH_ITEMS_SUCCESS':
+    case "ADD_ITEM_FORM_CANCEL":
+    case "FETCH_ITEMS_SUCCESS":
       return false;
     default:
       return state;

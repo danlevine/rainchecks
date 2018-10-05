@@ -18,67 +18,72 @@ const createUserDbRefFromState = getState => {
   return db.ref(`users/${uid}/movies`);
 };
 
-const fetchMovieDetails = item => dispatch => {
-  const tmdbMovieDetailsEndpoint = `https://api.themoviedb.org/3/movie/${
-    item.idTmdb
-  }?api_key=6a6b532ea6bf19c0c8430de484d28759&language=en-US&append_to_response=videos,releases,credits`;
+const fetchMovieDetails = movieId => {
+  debugger;
+  const tmdbMovieDetailsEndpoint =
+    "https://api.themoviedb.org/3/movie/" +
+    movieId +
+    "?api_key=6a6b532ea6bf19c0c8430de484d28759&language=en-US&append_to_response=videos,releases,credits";
   const omdbMovieDetailsEndpoint = imdbId =>
     `https://www.omdbapi.com/?i=${imdbId}&apikey=b73d8c25`;
   const currentDateTime = moment().format();
-  let movieData = {};
+  var movieData = {};
 
-  // Reset item (ex. unarchive) and grab latest data
-  axios(tmdbMovieDetailsEndpoint)
-    .then(({ data }) => {
-      movieData = {
-        status: "active",
-        lastFetched: currentDateTime,
-        dateAdded: currentDateTime,
-        idTmdb: data.id,
-        name: data.title,
-        overview: data.overview,
-        imagePosterPath: data.poster_path,
-        imageBackdropPath: data.backdrop_path,
-        releaseDate: data.release_date,
-        releases: data.releases,
-        videos: data.videos,
-        runtime: data.runtime,
-        genres: data.genres,
-        cast: data.credits.cast,
-        crew: data.credits.crew,
-        idImdb: data.imdb_id
-      };
+  return new Promise(function(resolve, reject) {
+    // Reset item (ex. unarchive) and grab latest data
+    axios(tmdbMovieDetailsEndpoint)
+      .then(({ data }) => {
+        movieData = {
+          status: "active",
+          lastFetched: currentDateTime,
+          dateAdded: currentDateTime,
+          idTmdb: data.id,
+          name: data.title,
+          overview: data.overview,
+          imagePosterPath: data.poster_path,
+          imageBackdropPath: data.backdrop_path,
+          releaseDate: data.release_date,
+          releases: data.releases,
+          videos: data.videos,
+          runtime: data.runtime,
+          genres: data.genres,
+          cast: data.credits.cast,
+          crew: data.credits.crew,
+          idImdb: data.imdb_id
+        };
 
-      // Using fetched imdb id, look up ratings with OMDB
-      return axios(omdbMovieDetailsEndpoint(data.imdb_id));
-    })
-    .then(response => {
-      const ratings = response.data.Ratings;
-      const ratingsObj = {};
-      ratings.forEach(i => (ratingsObj[i.Source] = i.Value));
+        // Using fetched imdb id, look up ratings with OMDB
+        return axios(omdbMovieDetailsEndpoint(data.imdb_id));
+      })
+      .then(response => {
+        const ratings = response.data.Ratings;
+        const ratingsObj = {};
+        ratings.forEach(i => (ratingsObj[i.Source] = i.Value));
 
-      if (ratingsObj["Internet Movie Database"]) {
-        movieData.scoreImdb = ratingsObj["Internet Movie Database"].replace(
-          /\/10$/,
-          ""
-        );
-      }
-      if (ratingsObj["Rotten Tomatoes"]) {
-        movieData.scoreTomato = ratingsObj["Rotten Tomatoes"].replace(/%$/, "");
-      }
-      if (ratingsObj["Metacritic"]) {
-        movieData.scoreMetacritic = ratingsObj["Metacritic"].replace(
-          /\/100$/,
-          ""
-        );
-      }
+        if (ratingsObj["Internet Movie Database"]) {
+          movieData.scoreImdb = ratingsObj["Internet Movie Database"].replace(
+            /\/10$/,
+            ""
+          );
+        }
+        if (ratingsObj["Rotten Tomatoes"]) {
+          movieData.scoreTomato = ratingsObj["Rotten Tomatoes"].replace(
+            /%$/,
+            ""
+          );
+        }
+        if (ratingsObj["Metacritic"]) {
+          movieData.scoreMetacritic = ratingsObj["Metacritic"].replace(
+            /\/100$/,
+            ""
+          );
+        }
 
-      db.ref(`items/${item.key}`).update(movieData);
-    })
-    .catch(error => {
-      // TODO: add error handling mechanism
-      console.log(error); // eslint-disable-line no-console
-    });
+        return movieData;
+      })
+      .then(resolve)
+      .catch(reject);
+  });
 };
 
 export const initializeItemsList = () => (dispatch, getState) => {
@@ -98,45 +103,34 @@ export const initializeItemsList = () => (dispatch, getState) => {
       payload: sortedMovieArray
     });
   });
-
-  /*
-   *  `child_added` gets called when adding an item but ALSO
-   *  when initializing the app (on each item added into the list)
-   */
-  dbUserMovies.on("child_added", snapshot => {
-    const currentItem = snapshot.val();
-
-    // Copy item key into object for convenience when iterating through items
-    if (!currentItem.key) {
-      currentItem.key = snapshot.key;
-      db.ref(`items/${snapshot.key}`).update({
-        key: snapshot.key
-      });
-    }
-
-    // Look up movie info if haven't before
-    if (!currentItem.lastFetched) {
-      fetchMovieDetails(currentItem)(dispatch);
-    }
-  });
 };
 
 export const refreshAllItems = () => dispatch => {};
 
 export const addItem = item => (dispatch, getState) => {
   const dbUserMovies = createUserDbRefFromState(getState);
+  const newMovieRef = dbUserMovies.push();
+  const movieId = newMovieRef.key;
+
+  debugger;
+  const movieDetailsPromise = fetchMovieDetails(item.id);
 
   if (typeof item === "object") {
-    dbUserMovies.push({
-      name: item.title,
-      idTmdb: item.id,
-      overview: item.overview,
-      imagePosterPath: item.poster_path,
-      imageBackdropPath: item.backdrop_path,
-      releaseDate: item.release_date
-    });
+    // Create new movie record and update with fetched details
+    newMovieRef
+      .set({
+        key: movieId,
+        name: item.title,
+        idTmdb: item.id,
+        overview: item.overview,
+        imagePosterPath: item.poster_path,
+        imageBackdropPath: item.backdrop_path,
+        releaseDate: item.release_date
+      })
+      .then(() => movieDetailsPromise)
+      .then(movieData => newMovieRef.update(movieData));
   } else {
-    dbUserMovies.push({ name: item.title });
+    newMovieRef.set({ name: item.title });
   }
 };
 
