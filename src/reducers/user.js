@@ -1,6 +1,6 @@
 const initialState = {
   currentUser: null,
-  userStatusChecked: false
+  userDataLoaded: false
 };
 
 const user = (state = initialState, action) => {
@@ -9,13 +9,18 @@ const user = (state = initialState, action) => {
       return {
         ...state,
         currentUser: action.user,
-        userStatusChecked: true
+        userDataLoaded: false
       };
     case "CURRENT_USER_LOGGED_OUT":
       return {
         ...state,
         currentUser: null,
-        userStatusChecked: true
+        userDataLoaded: true
+      };
+    case "USER_DATA_LOADED":
+      return {
+        ...state,
+        userDataLoaded: true
       };
     default:
       return state;

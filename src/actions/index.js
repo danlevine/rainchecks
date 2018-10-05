@@ -106,6 +106,9 @@ export const initializeItemsList = () => (dispatch, getState) => {
       type: "FETCH_ITEMS_SUCCESS",
       payload: sortedMovieArray
     });
+    dispatch({
+      type: "USER_DATA_LOADED"
+    });
   });
 };
 
@@ -155,13 +158,14 @@ export const deleteItem = key => (dispatch, getState) => {
 const provider = new firebase.auth.GoogleAuthProvider();
 const auth = firebase.auth();
 
-export const checkForLoggedInUser = () => dispatch => {
+export const checkForLoggedInUser = () => (dispatch, getState) => {
   auth.onAuthStateChanged(user => {
     if (user) {
       dispatch({
         type: "CURRENT_USER_LOGGED_IN",
         user
       });
+      initializeItemsList()(dispatch, getState);
     } else {
       dispatch({
         type: "CURRENT_USER_LOGGED_OUT"
@@ -170,7 +174,7 @@ export const checkForLoggedInUser = () => dispatch => {
   });
 };
 
-export const userLogin = () => dispatch => {
+export const userLogin = () => (dispatch, getState) => {
   auth.signInWithPopup(provider).then(result => {
     const user = result.user;
 
@@ -178,6 +182,7 @@ export const userLogin = () => dispatch => {
       type: "CURRENT_USER_LOGGED_IN",
       user
     });
+    initializeItemsList()(dispatch, getState);
   });
 };
 

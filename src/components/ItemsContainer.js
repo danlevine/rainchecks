@@ -10,11 +10,6 @@ class ItemsContainer extends Component {
     super(props);
   }
 
-  componentDidMount() {
-    // Load movie list data
-    this.props.initializeItemsList();
-  }
-
   render() {
     const { archiveItem, unarchiveItem, deleteItem, items } = this.props;
 

@@ -25,7 +25,7 @@ class App extends React.Component {
   }
 
   render() {
-    if (this.props.isFetching || !this.props.user.userStatusChecked) {
+    if (this.props.isFetching || !this.props.user.userDataLoaded) {
       // When either a) checking if user is logged in
       // OR b) logged in, but fetching user items
       return (
