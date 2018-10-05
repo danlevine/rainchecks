@@ -12,7 +12,6 @@ class App extends React.Component {
     super(props);
 
     this.login = this.login.bind(this);
-    this.logout = this.logout.bind(this);
   }
 
   componentDidMount() {
@@ -24,18 +23,11 @@ class App extends React.Component {
     this.props.userLogin();
   }
 
-  logout() {
-    this.props.userLogout();
-  }
-
   render() {
-    console.log("this.props", this.props);
     if (this.props.user.currentUser) {
-      console.log("logged in: ", this.props.user.currentUser.email);
       return (
         <div className="container">
           <Header />
-          <button onClick={this.logout}>Log Out</button>
           <ItemsContainer />
           <AddItemLauncher />
         </div>

@@ -13,6 +13,7 @@ class HeaderMenu extends Component {
     };
 
     this.toggleHeaderMenu = this.toggleHeaderMenu.bind(this);
+    this.handleUserLogout = this.handleUserLogout.bind(this);
   }
 
   toggleHeaderMenu() {
@@ -24,52 +25,84 @@ class HeaderMenu extends Component {
     });
   }
 
+  handleUserLogout() {
+    this.props.userLogout();
+    this.setState({ dropdownExpanded: false });
+  }
+
   render() {
     const { toggleActiveArchivedList } = this.props;
     const showActive = this.props.items.filter === "active";
+    const currentUser = this.props.user.currentUser;
 
-    return (
-      <HeaderMenuStyled>
-        <button
-          className={`header-menu__menu-btn ${
-            this.state.dropdownExpanded ? "expanded" : ""
-          } `}
-          onClick={this.toggleHeaderMenu}
-        >
-          {!this.state.dropdownExpanded ? (
-            <i className="fa fa-bars" />
+    if (currentUser) {
+      return (
+        <HeaderMenuStyled>
+          <button
+            className={`header-menu__menu-btn ${
+              this.state.dropdownExpanded ? "expanded" : ""
+            } `}
+            onClick={this.toggleHeaderMenu}
+          >
+            {!this.state.dropdownExpanded ? (
+              <i className="fa fa-bars" />
+            ) : (
+              <i className="fa fa-close" />
+            )}
+          </button>
+          {this.state.dropdownExpanded ? (
+            <div className="header-menu__dropdown-container">
+              {currentUser && (
+                <div className="header-menu__user-box">
+                  Logged in as
+                  <br />
+                  <span className="header-menu__user-email">
+                    {currentUser.email}
+                  </span>
+                </div>
+              )}
+              <ul>
+                <li>
+                  <hr />
+                  <button
+                    className="header__toggle-list-btn"
+                    onClick={toggleActiveArchivedList}
+                  >
+                    {showActive ? "Watched " : "Unwatched "}
+                    {showActive ? (
+                      <i className="fa fa-archive" />
+                    ) : (
+                      <i className="fa fa-ticket" />
+                    )}
+                  </button>
+                </li>
+                {currentUser && (
+                  <li>
+                    <hr />
+                    <button
+                      className="header__toggle-list-btn"
+                      onClick={this.handleUserLogout}
+                    >
+                      Sign Out <i className="fa fa-sign-out" />
+                    </button>
+                  </li>
+                )}
+              </ul>
+            </div>
           ) : (
-            <i className="fa fa-close" />
+            ""
           )}
-        </button>
-        {this.state.dropdownExpanded ? (
-          <div className="header-menu__dropdown-container">
-            <ul>
-              <li>
-                <button
-                  className="header__toggle-list-btn"
-                  onClick={toggleActiveArchivedList}
-                >
-                  {showActive ? "Watched " : "Unwatched "}
-                  {showActive ? (
-                    <i className="fa fa-archive" />
-                  ) : (
-                    <i className="fa fa-ticket" />
-                  )}
-                </button>
-              </li>
-            </ul>
-          </div>
-        ) : (
-          ""
-        )}
-      </HeaderMenuStyled>
-    );
+        </HeaderMenuStyled>
+      );
+    } else {
+      return <div />;
+    }
   }
 }
 
-const mapStateToProps = ({ items }) => {
+const mapStateToProps = ({ user, items }) => {
   return {
+    user,
     items
   };
 };
@@ -117,10 +150,13 @@ const HeaderMenuStyled = styled.div`
     position: absolute;
     top: 0;
     right: 15px;
-    padding-top: 40px
+    padding-top: 40px;
     background-color: #31abe1;
     border: 4px solid white;
     border-top: none;
+    color: #fff;
+    border-radius: 0 0px 4px 4px;
+    box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.2);
 
     @media (min-width: 480px) {
       right: 70px;
@@ -130,7 +166,24 @@ const HeaderMenuStyled = styled.div`
       list-style: none;
       padding: 0;
       margin: 0;
+
+      hr {
+        margin: 0 auto;
+        width: 80%;
+        border-top-color: #fff;
+      }
     }
+  }
+
+  .header-menu__user-box {
+    padding: 5px 20px;
+    color: #ccc;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .header-menu__user-email {
+    color: #fff;
   }
 
   .header__toggle-list-btn {
@@ -139,7 +192,7 @@ const HeaderMenuStyled = styled.div`
     cursor: pointer;
     color: white;
     padding: 10px 20px;
-    min-width: 150px;
+    width: 100%;
   }
 `;
 
