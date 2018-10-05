@@ -29,8 +29,8 @@ class App extends React.Component {
       // When either a) checking if user is logged in
       // OR b) logged in, but fetching user items
       return (
-        <div className="spinner spinner-dark">
-          <span className="spinner__text" />
+        <div className="rainy-busy-indicator">
+          <div className="rainy" />
         </div>
       );
     } else if (this.props.user.currentUser) {
