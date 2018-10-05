@@ -1,7 +1,7 @@
 import axios from "axios";
 import firebase from "firebase";
 import _ from "lodash";
-import moment from "moment";
+import dateFns from "date-fns";
 
 // FIREBASE CONFIG
 const config = {
@@ -19,14 +19,14 @@ const createUserDbRefFromState = getState => {
 };
 
 const fetchMovieDetails = movieId => {
-  debugger;
   const tmdbMovieDetailsEndpoint =
     "https://api.themoviedb.org/3/movie/" +
     movieId +
     "?api_key=6a6b532ea6bf19c0c8430de484d28759&language=en-US&append_to_response=videos,releases,credits";
   const omdbMovieDetailsEndpoint = imdbId =>
     `https://www.omdbapi.com/?i=${imdbId}&apikey=b73d8c25`;
-  const currentDateTime = moment().format();
+  const currentDateTime = dateFns.format(new Date());
+  debugger;
   var movieData = {};
 
   return new Promise(function(resolve, reject) {
@@ -95,9 +95,13 @@ export const initializeItemsList = () => (dispatch, getState) => {
   dbUserMovies.on("value", snapshot => {
     // convert movie list object into array for processing
     const movieArray = _.values(snapshot.val());
+
+    // Based on each item's added date, sort list in descending order
+    // (most recently added first)
     const sortedMovieArray = movieArray.sort(
-      (a, b) => moment(b.dateAdded) - moment(a.dateAdded)
+      (a, b) => (dateFns.isAfter(b.dateAdded, a.dateAdded) ? 1 : -1)
     );
+
     dispatch({
       type: "FETCH_ITEMS_SUCCESS",
       payload: sortedMovieArray
@@ -112,7 +116,6 @@ export const addItem = item => (dispatch, getState) => {
   const newMovieRef = dbUserMovies.push();
   const movieId = newMovieRef.key;
 
-  debugger;
   const movieDetailsPromise = fetchMovieDetails(item.id);
 
   if (typeof item === "object") {

@@ -54,10 +54,10 @@
   },
   "dependencies": {
     "axios": "^0.12.0",
+    "date-fns": "^1.29.0",
     "firebase": "^3.1.0",
     "intersection-observer": "^0.5.0",
     "lodash": "^4.13.1",
-    "moment": "^2.15.2",
     "react": "^0.14.6",
     "react-autosuggest": "^7.0.1",
     "react-dom": "^0.14.6",
