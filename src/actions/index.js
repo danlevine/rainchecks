@@ -1,7 +1,8 @@
 import axios from "axios";
 import firebase from "firebase";
 import _ from "lodash";
-import dateFns from "date-fns";
+import dateFnsIsAfter from "date-fns/is_after";
+import dateFnsFormat from "date-fns/format";
 
 // FIREBASE CONFIG
 const config = {
@@ -25,8 +26,7 @@ const fetchMovieDetails = movieId => {
     "?api_key=6a6b532ea6bf19c0c8430de484d28759&language=en-US&append_to_response=videos,releases,credits";
   const omdbMovieDetailsEndpoint = imdbId =>
     `https://www.omdbapi.com/?i=${imdbId}&apikey=b73d8c25`;
-  const currentDateTime = dateFns.format(new Date());
-  debugger;
+  const currentDateTime = dateFnsFormat(new Date());
   var movieData = {};
 
   return new Promise(function(resolve, reject) {
@@ -99,7 +99,7 @@ export const initializeItemsList = () => (dispatch, getState) => {
     // Based on each item's added date, sort list in descending order
     // (most recently added first)
     const sortedMovieArray = movieArray.sort(
-      (a, b) => (dateFns.isAfter(b.dateAdded, a.dateAdded) ? 1 : -1)
+      (a, b) => (dateFnsIsAfter(b.dateAdded, a.dateAdded) ? 1 : -1)
     );
 
     dispatch({
