@@ -7,8 +7,8 @@ const WelcomeSplash = props => (
   <WelcomeSplashStyled>
     <h2>Welcome to rainchecks!</h2>
     <p>
-      Use me to keep track of those films you'd love to watch when you have some
-      free time.
+      Use me to keep track of those films you&lsquo;d love to watch when you
+      have some free time.
     </p>
     <p>
       Just log in with your Google account to start saving some movie ideas for
