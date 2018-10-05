@@ -6,6 +6,7 @@ import * as actions from "../actions";
 import AddItemLauncher from "./AddItemLauncher";
 import ItemsContainer from "./ItemsContainer";
 import Header from "./Header";
+import WelcomeSplash from "./WelcomeSplash";
 
 class App extends React.Component {
   constructor(props) {
@@ -36,13 +37,7 @@ class App extends React.Component {
       return (
         <div className="container">
           <Header />
-          <div>
-            <h3>
-              Log in with your Google account to add sweet flicks for those
-              rainy days!
-            </h3>
-            <button onClick={this.login}>Log In</button>
-          </div>
+          <WelcomeSplash login={this.login} />
         </div>
       );
     }
