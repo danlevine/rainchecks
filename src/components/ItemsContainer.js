@@ -16,37 +16,22 @@ class ItemsContainer extends Component {
   }
 
   render() {
-    const {
-      archiveItem,
-      unarchiveItem,
-      deleteItem,
-      items,
-      isFetching
-    } = this.props;
+    const { archiveItem, unarchiveItem, deleteItem, items } = this.props;
 
     return (
-      <div>
-        {isFetching ? (
-          <div className="spinner spinner-dark">
-            <span className="spinner__text">Loading...</span>
-          </div>
-        ) : (
-          <ItemList
-            items={items}
-            onArchiveClick={archiveItem}
-            onUnarchiveClick={unarchiveItem}
-            onDeleteClick={deleteItem}
-          />
-        )}
-      </div>
+      <ItemList
+        items={items}
+        onArchiveClick={archiveItem}
+        onUnarchiveClick={unarchiveItem}
+        onDeleteClick={deleteItem}
+      />
     );
   }
 }
 
-const mapStateToProps = ({ items, isFetching }) => {
+const mapStateToProps = ({ items }) => {
   return {
-    items,
-    isFetching
+    items
   };
 };
 

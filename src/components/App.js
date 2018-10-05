@@ -25,7 +25,16 @@ class App extends React.Component {
   }
 
   render() {
-    if (this.props.user.currentUser) {
+    if (this.props.isFetching || !this.props.user.userStatusChecked) {
+      // When either a) checking if user is logged in
+      // OR b) logged in, but fetching user items
+      return (
+        <div className="spinner spinner-dark">
+          <span className="spinner__text" />
+        </div>
+      );
+    } else if (this.props.user.currentUser) {
+      // User successfully logged in and items fetched
       return (
         <div className="container">
           <Header />
@@ -34,6 +43,7 @@ class App extends React.Component {
         </div>
       );
     } else {
+      // User not logged in
       return (
         <div className="container">
           <Header />
@@ -44,9 +54,10 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = ({ user }) => {
+const mapStateToProps = ({ user, isFetching }) => {
   return {
-    user
+    user,
+    isFetching
   };
 };
 

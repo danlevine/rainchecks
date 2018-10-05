@@ -162,6 +162,10 @@ export const checkForLoggedInUser = () => dispatch => {
         type: "CURRENT_USER_LOGGED_IN",
         user
       });
+    } else {
+      dispatch({
+        type: "CURRENT_USER_LOGGED_OUT"
+      });
     }
   });
 };
