@@ -28,7 +28,6 @@ body
 
 #root
   background-color: $page_background_color
-  border-top: 200px solid #fff
   min-height: 100%
   margin: 0
   padding: 0
@@ -36,7 +35,15 @@ body
 .container
   margin: 0 auto
   max-width: 700px
-  padding: 0 $default_padding_amount
+
+  &:before
+    content: ""
+    background-color: #fff
+    width: 100%
+    height: 200px
+    position: absolute
+    top: 0
+    left: 0
 
 .no-scroll
   overflow: hidden
@@ -77,9 +84,9 @@ body
 header
   height: 200px
   width: 100%
-  position: fixed
   top: 0
   left: 0
+  background-color: #fff
   @extend %flexbox-vertical-center-children
 
   animation-duration: 1.5s
@@ -101,7 +108,7 @@ header
   background-color: $page_background_color
   list-style: none
   margin: 0
-  padding: $default_padding_amount 0
+  padding: $default_padding_amount
   position: relative
 
   animation-duration: 1.5s
@@ -193,7 +200,7 @@ $item_footer_button_height: 32px
   margin: 0
 
   @media (min-width: $break_small)
-    line-height: 1.4;
+    line-height: 1.4
 
 .item__scores
   list-style-type: none
