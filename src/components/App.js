@@ -52,10 +52,8 @@ class App extends React.Component {
     if (!this.props.user.currentUser) {
       return (
         <div className="container">
-          <div>
-            <Header />
-            <WelcomeSplash />
-          </div>
+          <Header />
+          <WelcomeSplash />
         </div>
       );
     }

@@ -159,7 +159,6 @@ const ui = new firebaseui.auth.AuthUI(firebaseAuthObj());
 var authFirebaseListener;
 
 export const checkForLoggedInUser = () => (dispatch, getState) => {
-  console.log("ui.isPendingRedirect()", ui.isPendingRedirect());
   authFirebaseListener = auth.onAuthStateChanged(user => {
     if (user) {
       dispatch({
