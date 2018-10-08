@@ -154,12 +154,11 @@ const HeaderMenuStyled = styled.div`
     height: 100vh;
     width: 240px;
     background-color: #31abe1;
-    /* border-right: 4px solid white; */
     color: #fff;
     border-radius: 0 0px 4px 4px;
     box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.2);
     z-index: 2;
-    animation: 0.4s slidein-item;
+    animation: 0.4s slidein-menu-left;
     font-size: 16px;
 
     /* @media (min-width: 480px) {
