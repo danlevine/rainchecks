@@ -71,7 +71,7 @@ class HeaderMenu extends Component {
                     className="header__toggle-list-btn"
                     onClick={toggleActiveArchivedList}
                   >
-                    {showActive ? "Watched " : "Unwatched "}
+                    {showActive ? "Show Watched " : "Show Unwatched "}
                     {showActive ? (
                       <i className="fa fa-archive" />
                     ) : (
@@ -148,11 +148,11 @@ const HeaderMenuStyled = styled.div`
   }
 
   .header-menu__dropdown-container {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     height: 100vh;
-    width: 240px;
+    width: 300px;
     background-color: #31abe1;
     color: #fff;
     border-radius: 0 0px 4px 4px;
@@ -202,14 +202,14 @@ const HeaderMenuStyled = styled.div`
     border: none;
     cursor: pointer;
     color: white;
-    padding: 10px 20px;
+    padding: 20px;
     width: 100%;
   }
 `;
 
 const DropdownUnderlayStyled = styled.div`
   content: "";
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   height: 100%;
