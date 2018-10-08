@@ -131,9 +131,9 @@ const HeaderMenuStyled = styled.div`
     background: #31abe1;
     color: #fff;
     padding: 0;
-    height: 40px;
-    width: 40px;
-    font-size: 26px;
+    height: 50px;
+    width: 50px;
+    font-size: 30px;
     z-index: 999;
     cursor: pointer;
     border: none;
@@ -152,14 +152,15 @@ const HeaderMenuStyled = styled.div`
     top: 0;
     left: 0;
     height: 100vh;
-    padding-top: 40px;
+    width: 240px;
     background-color: #31abe1;
-    border-right: 4px solid white;
+    /* border-right: 4px solid white; */
     color: #fff;
     border-radius: 0 0px 4px 4px;
     box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.2);
     z-index: 2;
     animation: 0.4s slidein-item;
+    font-size: 16px;
 
     /* @media (min-width: 480px) {
       right: 70px;
@@ -170,23 +171,31 @@ const HeaderMenuStyled = styled.div`
       padding: 0;
       margin: 0;
 
+      li {
+        &:nth-child(odd) {
+          background: rgba(255, 255, 255, 0.2);
+        }
+      }
+
       hr {
         margin: 0 auto;
-        width: 80%;
+        width: calc(100% - 20px);
         border-top-color: #fff;
+        display: none;
       }
     }
   }
 
   .header-menu__user-box {
-    padding: 5px 20px;
-    color: #ccc;
-    font-size: 12px;
-    text-align: center;
+    padding: 30px 10px 10px;
+    text-transform: uppercase;
+    font-size: 14px;
+    text-align: right;
   }
 
   .header-menu__user-email {
     color: #fff;
+    text-transform: none;
   }
 
   .header__toggle-list-btn {
