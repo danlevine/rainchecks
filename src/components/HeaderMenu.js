@@ -134,9 +134,9 @@ const HeaderMenuStyled = styled.div`
     height: 50px;
     width: 50px;
     font-size: 30px;
-    z-index: 999;
+    z-index: 3;
     cursor: pointer;
-    border: none;
+    border-radius: 0 0 6px 0;
 
     /* @media (min-width: 480px) {
       right: 70px;

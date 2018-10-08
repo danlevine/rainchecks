@@ -133,7 +133,7 @@ header
     outline: 1px dashed rgba(255,255,255,.4)
 
 // ITEM
-$item_border_radius: 2px
+$item_border_radius: 6px
 $item_poster_height_small: 150px
 $item_poster_width_small: 100px
 $item_poster_height_medium: 300px
@@ -146,7 +146,7 @@ $item_footer_button_height: 32px
   margin-bottom: $default_padding_amount
   position: relative
   min-height: $item_poster_height_small
-  @extend %mdl-shadow--2dp
+  cursor: pointer
 
   &:last-of-type
     margin-bottom: 0
@@ -242,7 +242,6 @@ $item_footer_button_height: 32px
   font-size: 10px
 
 .item__description
-  border-top: 1px dashed $border_gray
   margin-top: $item_poster_height_small - $default_padding_amount - 1px
   padding-top: $default_padding_amount
   padding-bottom: $item_footer_button_height
@@ -287,7 +286,8 @@ $item_footer_button_height: 32px
 
 .item__footer-btn
   border: none
-  background-color: $background-color_gray
+  // background-color: $background-color_gray
+  color: #999
   line-height: 28px
   cursor: pointer
   padding: 0 16px
