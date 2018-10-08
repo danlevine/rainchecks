@@ -38,11 +38,7 @@ class App extends React.Component {
       );
     }
 
-    if (
-      !this.props.isAppBusy &&
-      this.props.user.currentUser &&
-      !this.props.isPendingAuthRedirect
-    ) {
+    if (this.props.user.currentUser) {
       // User successfully logged in and items fetched
       return (
         <div className="container">
@@ -53,13 +49,10 @@ class App extends React.Component {
       );
     }
 
-    if (!this.props.isAppBusy && !this.props.user.currentUser) {
+    if (!this.props.user.currentUser) {
       return (
         <div className="container">
-          {this.props.isPendingAuthRedirect && <BusyIndicator />}
-          <div
-            style={this.props.isPendingAuthRedirect ? { display: "none" } : {}}
-          >
+          <div>
             <Header />
             <WelcomeSplash />
           </div>
@@ -69,11 +62,10 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = ({ user, isAppBusy, isPendingAuthRedirect }) => {
+const mapStateToProps = ({ user, isAppBusy }) => {
   return {
     user,
-    isAppBusy,
-    isPendingAuthRedirect
+    isAppBusy
   };
 };
 

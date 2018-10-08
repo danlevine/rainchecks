@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import user, { isPendingAuthRedirect } from "./user";
+import user from "./user";
 import items, { isAppBusy, isAddFormActive } from "./items";
 import suggestions from "./suggestions";
 
@@ -8,8 +8,7 @@ const rcApp = combineReducers({
   items,
   suggestions,
   isAppBusy,
-  isAddFormActive,
-  isPendingAuthRedirect
+  isAddFormActive
 });
 
 export default rcApp;

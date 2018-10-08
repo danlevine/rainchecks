@@ -8,7 +8,7 @@ import dateFnsFormat from "date-fns/format";
 // FIREBASE CONFIG
 const config = {
   apiKey: "AIzaSyC0WHChgY9Ahgr7t4NRCQajmL_vG6mtQ1o",
-  authDomain: "flickering-fire-3051.firebaseapp.com",
+  authDomain: "auth.rainchecks.danlevine.io",
   databaseURL: "https://flickering-fire-3051.firebaseio.com",
   storageBucket: "flickering-fire-3051.appspot.com"
 };
@@ -159,6 +159,7 @@ const ui = new firebaseui.auth.AuthUI(firebaseAuthObj());
 var authFirebaseListener;
 
 export const checkForLoggedInUser = () => (dispatch, getState) => {
+  console.log("ui.isPendingRedirect()", ui.isPendingRedirect());
   authFirebaseListener = auth.onAuthStateChanged(user => {
     if (user) {
       dispatch({
@@ -200,7 +201,8 @@ export const initAuthBox = () => dispatch => {
       firebaseAuthObj.GoogleAuthProvider.PROVIDER_ID,
       firebaseAuthObj.TwitterAuthProvider.PROVIDER_ID,
       firebaseAuthObj.GithubAuthProvider.PROVIDER_ID
-    ]
+    ],
+    signInFlow: "popup"
   });
 };
 

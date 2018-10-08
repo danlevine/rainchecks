@@ -1,7 +1,6 @@
 const initialState = {
   currentUser: null,
-  userStateChecked: false,
-  isPendingAuthRedirect: false
+  userStateChecked: false
 };
 
 const user = (state = initialState, action) => {
@@ -24,14 +23,3 @@ const user = (state = initialState, action) => {
 };
 
 export default user;
-
-export const isPendingAuthRedirect = (state = false, action) => {
-  switch (action.type) {
-    case "AUTH_REDIRECT_PENDING":
-      return true;
-    case "EXISTING_USER_DETECTED_AND_LOGGED_IN":
-      return false;
-    default:
-      return state;
-  }
-};
