@@ -6,6 +6,7 @@ import * as actions from "../actions";
 import AddItemLauncher from "./AddItemLauncher";
 import ItemsContainer from "./ItemsContainer";
 import Header from "./Header";
+import BusyIndicator from "./BusyIndicator";
 import WelcomeSplash from "./WelcomeSplash";
 
 class App extends React.Component {
@@ -20,20 +21,28 @@ class App extends React.Component {
     this.props.checkForLoggedInUser();
   }
 
+  componentWillUnmount() {
+    this.props.unmountAuth();
+  }
+
   login() {
     this.props.userLogin();
   }
 
   render() {
-    if (this.props.isFetching || !this.props.user.userDataLoaded) {
-      // When either a) checking if user is logged in
-      // OR b) logged in, but fetching user items
+    if (this.props.isAppBusy) {
       return (
-        <div className="rainy-busy-indicator">
-          <div className="rainy" />
+        <div className="container">
+          <BusyIndicator />
         </div>
       );
-    } else if (this.props.user.currentUser) {
+    }
+
+    if (
+      !this.props.isAppBusy &&
+      this.props.user.currentUser &&
+      !this.props.isPendingAuthRedirect
+    ) {
       // User successfully logged in and items fetched
       return (
         <div className="container">
@@ -42,22 +51,29 @@ class App extends React.Component {
           <AddItemLauncher />
         </div>
       );
-    } else {
-      // User not logged in
+    }
+
+    if (!this.props.isAppBusy && !this.props.user.currentUser) {
       return (
         <div className="container">
-          <Header />
-          <WelcomeSplash login={this.login} />
+          {this.props.isPendingAuthRedirect && <BusyIndicator />}
+          <div
+            style={this.props.isPendingAuthRedirect ? { display: "none" } : {}}
+          >
+            <Header />
+            <WelcomeSplash />
+          </div>
         </div>
       );
     }
   }
 }
 
-const mapStateToProps = ({ user, isFetching }) => {
+const mapStateToProps = ({ user, isAppBusy, isPendingAuthRedirect }) => {
   return {
     user,
-    isFetching
+    isAppBusy,
+    isPendingAuthRedirect
   };
 };
 

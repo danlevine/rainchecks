@@ -1,14 +1,15 @@
 import { combineReducers } from "redux";
-import user from "./user";
-import items, { isFetching, isAddFormActive } from "./items";
+import user, { isPendingAuthRedirect } from "./user";
+import items, { isAppBusy, isAddFormActive } from "./items";
 import suggestions from "./suggestions";
 
 const rcApp = combineReducers({
   user,
   items,
   suggestions,
-  isFetching,
-  isAddFormActive
+  isAppBusy,
+  isAddFormActive,
+  isPendingAuthRedirect
 });
 
 export default rcApp;

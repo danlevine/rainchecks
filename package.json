@@ -55,7 +55,8 @@
   "dependencies": {
     "axios": "^0.12.0",
     "date-fns": "^1.29.0",
-    "firebase": "^3.1.0",
+    "firebase": "^5.5.3",
+    "firebaseui": "^3.4.1",
     "intersection-observer": "^0.5.0",
     "lodash": "^4.13.1",
     "react": "^0.14.6",
