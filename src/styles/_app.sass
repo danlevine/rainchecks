@@ -109,13 +109,21 @@ header
   animation-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1)
 
 .item-list__show-more-btn
-  background: white
+  background: none
   border: none
   width: 100%
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12)
-  font-size: 16px
-  padding: 15px
   border-radius: 2px
+  color: white
+  cursor: pointer
+  font-size: 16px
+  padding: 20px
+  transition: 0.1s background ease-out
+
+  &:hover
+    background: rgba(255,255,255,0.2)
+
+  &:focus
+    outline: 1px dashed rgba(255,255,255,.4)
 
 // ITEM
 $item_border_radius: 2px
