@@ -1,30 +1,38 @@
 import React from "react";
+import { connect } from "react-redux";
 import styled from "styled-components";
+import firebase from "firebase";
+import firebaseui from "firebaseui";
+
+import * as actions from "../actions";
 
 import AuthLoginButton from "./AuthLoginButton";
 
-const WelcomeSplash = props => (
-  <WelcomeSplashStyled>
-    <h2>Welcome to rainchecks!</h2>
-    <p>
-      Use me to keep track of those films you&lsquo;d love to watch when you
-      have some free time.
-    </p>
-    <p>
-      Just log in with your Google account to start saving some movie ideas for
-      those rainy days!
-    </p>
-    <div className="welcome-splash__login-box">
-      <AuthLoginButton
-        onClick={props.login}
-        icon="google"
-        accentColor="#4285f4"
-      >
-        Sign in with Google
-      </AuthLoginButton>
-    </div>
-  </WelcomeSplashStyled>
-);
+class WelcomeSplash extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    this.props.initAuthBox();
+  }
+
+  render() {
+    return (
+      <WelcomeSplashStyled>
+        <h2>Welcome to rainchecks!</h2>
+        <p>
+          Use me to keep track of those films you&lsquo;d love to watch when you
+          have some free time.
+        </p>
+        <p>
+          Just sign in to start saving some movie ideas for those rainy days!
+        </p>
+        <div className="firebaseui-auth-container" />
+      </WelcomeSplashStyled>
+    );
+  }
+}
 
 const WelcomeSplashStyled = styled.div`
   color: #fff;
@@ -48,5 +56,17 @@ const WelcomeSplashStyled = styled.div`
     margin-top: 40px;
   }
 `;
+
+const mapStateToProps = ({ user, isAppBusy }) => {
+  return {
+    user,
+    isAppBusy
+  };
+};
+
+WelcomeSplash = connect(
+  null,
+  actions
+)(WelcomeSplash);
 
 export default WelcomeSplash;

@@ -1,5 +1,6 @@
 import axios from "axios";
 import firebase from "firebase";
+import firebaseui from "firebaseui";
 import _ from "lodash";
 import dateFnsIsAfter from "date-fns/is_after";
 import dateFnsFormat from "date-fns/format";
@@ -7,7 +8,7 @@ import dateFnsFormat from "date-fns/format";
 // FIREBASE CONFIG
 const config = {
   apiKey: "AIzaSyC0WHChgY9Ahgr7t4NRCQajmL_vG6mtQ1o",
-  authDomain: "flickering-fire-3051.firebaseapp.com",
+  authDomain: "auth.rainchecks.danlevine.io",
   databaseURL: "https://flickering-fire-3051.firebaseio.com",
   storageBucket: "flickering-fire-3051.appspot.com"
 };
@@ -106,9 +107,6 @@ export const initializeItemsList = () => (dispatch, getState) => {
       type: "FETCH_ITEMS_SUCCESS",
       payload: sortedMovieArray
     });
-    dispatch({
-      type: "USER_DATA_LOADED"
-    });
   });
 };
 
@@ -155,34 +153,55 @@ export const deleteItem = key => (dispatch, getState) => {
   dbUserMovies.child(key).remove();
 };
 
-const provider = new firebase.auth.GoogleAuthProvider();
 const auth = firebase.auth();
+const firebaseAuthObj = firebase.auth;
+const ui = new firebaseui.auth.AuthUI(firebaseAuthObj());
+var authFirebaseListener;
 
 export const checkForLoggedInUser = () => (dispatch, getState) => {
-  auth.onAuthStateChanged(user => {
+  authFirebaseListener = auth.onAuthStateChanged(user => {
     if (user) {
       dispatch({
-        type: "CURRENT_USER_LOGGED_IN",
+        type: "EXISTING_USER_DETECTED_AND_LOGGED_IN",
         user
       });
       initializeItemsList()(dispatch, getState);
+    } else if (!user && ui.isPendingRedirect()) {
+      dispatch({
+        type: "AUTH_REDIRECT_PENDING"
+      });
     } else {
       dispatch({
-        type: "CURRENT_USER_LOGGED_OUT"
+        type: "NO_EXISTING_USER_DETECTED"
       });
     }
   });
 };
 
-export const userLogin = () => (dispatch, getState) => {
-  auth.signInWithPopup(provider).then(result => {
-    const user = result.user;
+export const unmountAuth = () => dispatch => {
+  authFirebaseListener && authFirebaseListener();
+};
 
-    dispatch({
-      type: "CURRENT_USER_LOGGED_IN",
-      user
-    });
-    initializeItemsList()(dispatch, getState);
+export const initAuthBox = () => dispatch => {
+  ui.start(".firebaseui-auth-container", {
+    callbacks: {
+      uiShown: function() {
+        // The widget is rendered.
+        // Hide the loader.
+        if (!ui.isPendingRedirect()) {
+          dispatch({
+            type: "AUTH_BOX_LOADED"
+          });
+        }
+      }
+    },
+    signInOptions: [
+      firebaseAuthObj.EmailAuthProvider.PROVIDER_ID,
+      firebaseAuthObj.GoogleAuthProvider.PROVIDER_ID,
+      firebaseAuthObj.TwitterAuthProvider.PROVIDER_ID,
+      firebaseAuthObj.GithubAuthProvider.PROVIDER_ID
+    ],
+    signInFlow: "popup"
   });
 };
 

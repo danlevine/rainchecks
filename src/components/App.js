@@ -6,6 +6,7 @@ import * as actions from "../actions";
 import AddItemLauncher from "./AddItemLauncher";
 import ItemsContainer from "./ItemsContainer";
 import Header from "./Header";
+import BusyIndicator from "./BusyIndicator";
 import WelcomeSplash from "./WelcomeSplash";
 
 class App extends React.Component {
@@ -20,20 +21,24 @@ class App extends React.Component {
     this.props.checkForLoggedInUser();
   }
 
+  componentWillUnmount() {
+    this.props.unmountAuth();
+  }
+
   login() {
     this.props.userLogin();
   }
 
   render() {
-    if (this.props.isFetching || !this.props.user.userDataLoaded) {
-      // When either a) checking if user is logged in
-      // OR b) logged in, but fetching user items
+    if (this.props.isAppBusy) {
       return (
-        <div className="rainy-busy-indicator">
-          <div className="rainy" />
+        <div className="container">
+          <BusyIndicator />
         </div>
       );
-    } else if (this.props.user.currentUser) {
+    }
+
+    if (this.props.user.currentUser) {
       // User successfully logged in and items fetched
       return (
         <div className="container">
@@ -42,22 +47,23 @@ class App extends React.Component {
           <AddItemLauncher />
         </div>
       );
-    } else {
-      // User not logged in
+    }
+
+    if (!this.props.user.currentUser) {
       return (
         <div className="container">
           <Header />
-          <WelcomeSplash login={this.login} />
+          <WelcomeSplash />
         </div>
       );
     }
   }
 }
 
-const mapStateToProps = ({ user, isFetching }) => {
+const mapStateToProps = ({ user, isAppBusy }) => {
   return {
     user,
-    isFetching
+    isAppBusy
   };
 };
 

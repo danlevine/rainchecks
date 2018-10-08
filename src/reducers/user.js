@@ -1,26 +1,21 @@
 const initialState = {
   currentUser: null,
-  userDataLoaded: false
+  userStateChecked: false
 };
 
 const user = (state = initialState, action) => {
   switch (action.type) {
-    case "CURRENT_USER_LOGGED_IN":
+    case "EXISTING_USER_DETECTED_AND_LOGGED_IN":
       return {
         ...state,
         currentUser: action.user,
-        userDataLoaded: false
+        userStateChecked: true
       };
-    case "CURRENT_USER_LOGGED_OUT":
+    case "NO_EXISTING_USER_DETECTED":
       return {
         ...state,
         currentUser: null,
-        userDataLoaded: true
-      };
-    case "USER_DATA_LOADED":
-      return {
-        ...state,
-        userDataLoaded: true
+        userStateChecked: true
       };
     default:
       return state;

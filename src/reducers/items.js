@@ -67,12 +67,12 @@ const items = (state = initialState, action) => {
 
 export default items;
 
-export const isFetching = (state = false, action) => {
+export const isAppBusy = (state = true, action) => {
   switch (action.type) {
-    case "FETCH_ITEMS_REQUEST":
-      return true;
+    case "AUTH_REDIRECT_PENDING":
     case "FETCH_ITEMS_SUCCESS":
     case "FETCH_ITEMS_FAILURE":
+    case "NO_EXISTING_USER_DETECTED":
       return false;
     default:
       return state;
