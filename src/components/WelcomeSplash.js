@@ -40,6 +40,7 @@ const WelcomeSplashStyled = styled.div`
   text-align: center;
   max-width: 400px;
   margin: 0 auto;
+  font-size: 16px;
 
   h2,
   p {
