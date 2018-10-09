@@ -73,9 +73,9 @@ class HeaderMenu extends Component {
                   >
                     {showActive ? "Show Watched " : "Show Unwatched "}
                     {showActive ? (
-                      <i className="fa fa-archive" />
+                      <i className="fa fa-eye" />
                     ) : (
-                      <i className="fa fa-ticket" />
+                      <i className="fa fa-eye-slash" />
                     )}
                   </button>
                 </li>

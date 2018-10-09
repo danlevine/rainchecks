@@ -137,10 +137,16 @@ class Item extends Component {
             </p>
           </div>
           <div className="item__footer">
-            <button className="item__footer-btn" onClick={onDeleteClick}>
-              <i className="fa fa-minus fa-fw" />
-              Remove from list
-            </button>
+            {videos && (
+              <a
+                className="item__footer-btn"
+                target="_blank"
+                href={`https://youtu.be/${videos.results[0].key}`}
+              >
+                <i className="fa fa-film" />
+                View trailer
+              </a>
+            )}
             {status === "active" ? (
               <button className="item__footer-btn" onClick={onArchiveClick}>
                 <i className="fa fa-eye fa-fw" />
@@ -152,16 +158,10 @@ class Item extends Component {
                 Mark as unwatched
               </button>
             )}
-            {videos && (
-              <a
-                className="item__footer-btn"
-                target="_blank"
-                href={`https://youtu.be/${videos.results[0].key}`}
-              >
-                <i className="fa fa-film" />
-                View trailer
-              </a>
-            )}
+            <button className="item__footer-btn" onClick={onDeleteClick}>
+              <i className="fa fa-minus fa-fw" />
+              Remove from list
+            </button>
           </div>
         </div>
       </ItemStyled>
