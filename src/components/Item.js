@@ -255,7 +255,7 @@ const ItemStyled = styled.li`
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      font-size: 10px;
+      font-size: 12px;
 
       @media (min-width: ${break_small}px) {
         font-size: 13px;
