@@ -83,9 +83,11 @@ class Item extends Component {
             <div className="item__description">
               <p className="item__plot">{overview}</p>
               <p className="item__people">
-                Cast: {castStr}
+                <span className="item__accent-label">Cast</span>
+                {castStr}
                 <br />
-                Director: {directorStr}
+                <span className="item__accent-label">Director</span>
+                {directorStr}
               </p>
             </div>
           </div>
@@ -117,9 +119,9 @@ class Item extends Component {
             </button> */}
           <div className="item__toggle-indicator">
             {this.state.itemExpanded ? (
-              <i className="fa fa-chevron-down" />
-            ) : (
               <i className="fa fa-chevron-up" />
+            ) : (
+              <i className="fa fa-chevron-down" />
             )}
           </div>
         </div>
@@ -127,24 +129,26 @@ class Item extends Component {
           <div className="item__slide-down-description">
             <p className="item__plot">{overview}</p>
             <p className="item__people">
-              Cast: {castStr}
+              <span className="item__accent-label">Cast</span>
+              {castStr}
               <br />
-              Director: {directorStr}
+              <span className="item__accent-label">Director</span>
+              {directorStr}
             </p>
           </div>
           <div className="item__footer">
             <button className="item__footer-btn" onClick={onDeleteClick}>
-              <i className="fa fa-minus" />
+              <i className="fa fa-minus fa-fw" />
               Remove from list
             </button>
             {status === "active" ? (
               <button className="item__footer-btn" onClick={onArchiveClick}>
-                <i className="fa fa-check" />
+                <i className="fa fa-eye fa-fw" />
                 Mark as watched
               </button>
             ) : (
               <button className="item__footer-btn" onClick={onUnarchiveClick}>
-                <i className="fa fa-exit" />
+                <i className="fa fa-eye-slash fa-fw" />
                 Mark as unwatched
               </button>
             )}
@@ -154,7 +158,7 @@ class Item extends Component {
                 target="_blank"
                 href={`https://youtu.be/${videos.results[0].key}`}
               >
-                <i className="fa fa-camera" />
+                <i className="fa fa-film" />
                 View trailer
               </a>
             )}
@@ -220,7 +224,7 @@ const ItemStyled = styled.li`
   }
 
   .item__name {
-    font-size: 14px;
+    font-size: 16px;
     display: inline-block;
     font-weight: 600;
     margin: 0;
@@ -316,6 +320,8 @@ const ItemStyled = styled.li`
     flex-direction: column;
     align-items: center;
     text-decoration: none;
+    text-align: center;
+    transition: 0.2s background-color ease-out;
     cursor: pointer;
 
     @media (min-width: ${break_small}px) {
@@ -323,13 +329,31 @@ const ItemStyled = styled.li`
     }
 
     &:focus {
-      text-decoration: underline;
       outline: none;
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    &:hover {
+      .fa {
+        background-color: rgba(255, 255, 255, 0.5);
+      }
     }
 
     .fa {
       font-size: 24px;
       margin-bottom: 5px;
+      background-color: rgba(255, 255, 255, 0.3);
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s background-color ease-out;
+
+      /* &.fa-eye,
+      &.fa-film {
+      } */
     }
   }
 
@@ -343,6 +367,7 @@ const ItemStyled = styled.li`
     position: relative;
     background: #3192bd; /* alternate darker blue */
     color: #fff;
+    font-size: 16px;
     border-radius: 0 0 6px 6px;
     margin-top: -5px;
     max-height: 500px;
@@ -354,7 +379,7 @@ const ItemStyled = styled.li`
     }
 
     @media (min-width: ${break_small}px) {
-      max-height: 100px;
+      max-height: 150px;
     }
   }
 
@@ -372,6 +397,29 @@ const ItemStyled = styled.li`
     right: 10px;
     color: #999;
     font-size: 12px;
+  }
+
+  .item__people {
+    margin-top: 16px;
+  }
+
+  .item__accent-label {
+    text-transform: uppercase;
+    background: white;
+    color: #3192bd;
+    font-size: 10px;
+    padding: 0 2px;
+    border-radius: 4px;
+    margin-right: 5px;
+    position: relative;
+    top: -2px;
+
+    @media (min-width: ${break_small}px) {
+      color: #fff;
+      background: #999;
+      font-size: 8px;
+      top: -1px;
+    }
   }
 `;
 
