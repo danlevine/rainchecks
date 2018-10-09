@@ -191,25 +191,20 @@ const ItemStyled = styled.li`
     border-radius: ${item_border_radius}px;
     position: relative;
     min-height: ${item_poster_height_small}px;
-    cursor: pointer;
     display: flex;
     z-index: 1;
+    cursor: pointer;
   }
 
   .item__poster {
     height: ${item_poster_height_small}px;
     width: ${item_poster_width_small}px;
-    flex-shrink: 0;
-    /* min-width: ${item_poster_width_small}px; */
-    /* position: absolute; */
-    /* top: 0; */
-    /* bottom: 0; */
     border-radius: ${item_border_radius}px 0 0 ${item_border_radius}px;
+    flex-shrink: 0;
 
     @media (min-width: ${break_small}px) {
       height: ${item_poster_height_medium}px;
       width: ${item_poster_width_medium}px;
-      /* min-width: ${item_poster_width_medium}px; */
     }
   }
 
@@ -306,28 +301,26 @@ const ItemStyled = styled.li`
   .item__footer {
     display: flex;
     width: 100%;
+    margin-top: 5px;
   }
 
   .item__footer-btn {
-    border: none;
+    color: #fff;
     background: none;
+    border: none;
     line-height: 28px;
-    cursor: pointer;
     padding: 16px;
     flex: 1;
     line-height: 1.4;
-    /* white-space: nowrap; */
-    transition: flex 0.2s 0.2s, padding 0.2s 0.2s, border 0.2s 0.2s;
-    /* border-right: 1px solid white; */
-    color: #fff;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-decoration: none;
+    cursor: pointer;
 
-    /* &:last-of-type {
-      border-right: none;
-    } */
+    @media (min-width: ${break_small}px) {
+      padding: 24px 16px;
+    }
 
     &:focus {
       text-decoration: underline;
@@ -348,13 +341,13 @@ const ItemStyled = styled.li`
 
   .item__slide-down {
     position: relative;
-    background: #3192BD; /* alternate darker blue */
+    background: #3192bd; /* alternate darker blue */
     color: #fff;
     border-radius: 0 0 6px 6px;
     margin-top: -5px;
     max-height: 500px;
     overflow: hidden;
-    transition: .4s all ease-out;
+    transition: 0.4s all ease-out;
 
     &.item-collapsed {
       max-height: 0;
@@ -366,7 +359,7 @@ const ItemStyled = styled.li`
   }
 
   .item__slide-down-description {
-    padding: 15px;
+    padding: 15px 15px 0;
 
     @media (min-width: ${break_small}px) {
       display: none;

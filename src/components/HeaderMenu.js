@@ -128,8 +128,8 @@ const HeaderMenuStyled = styled.div`
     top: 0;
     left: 0;
     border: none;
-    background: #31abe1;
-    color: #fff;
+    background: #fff;
+    color: #31abe1;
     padding: 0;
     height: 50px;
     width: 50px;
