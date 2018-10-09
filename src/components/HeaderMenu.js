@@ -215,7 +215,7 @@ const DropdownUnderlayStyled = styled.div`
   height: 100%;
   width: 100%;
   background-color: rgba(255, 255, 255, 0.9);
-  z-index: 1;
+  z-index: 2;
   animation: 0.4s fadein;
 `;
 
