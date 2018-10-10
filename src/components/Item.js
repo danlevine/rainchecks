@@ -370,7 +370,7 @@ const ItemStyled = styled.li`
     font-size: 16px;
     border-radius: 0 0 6px 6px;
     margin-top: -5px;
-    max-height: 500px;
+    max-height: 700px;
     overflow: hidden;
     transition: 0.4s all ease-out;
 
