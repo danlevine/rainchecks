@@ -1,5 +1,7 @@
 import axios from "axios";
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/database";
 import firebaseui from "firebaseui";
 import _ from "lodash";
 import dateFnsIsAfter from "date-fns/is_after";
