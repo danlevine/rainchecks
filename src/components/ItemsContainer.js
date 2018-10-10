@@ -6,10 +6,6 @@ import * as actions from "../actions";
 import ItemList from "../components/ItemList";
 
 class ItemsContainer extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const { archiveItem, unarchiveItem, deleteItem, items } = this.props;
 
@@ -30,9 +26,9 @@ const mapStateToProps = ({ items }) => {
   };
 };
 
-ItemsContainer = connect(
+const ConnectedItemsContainer = connect(
   mapStateToProps,
   actions
 )(ItemsContainer);
 
-export default ItemsContainer;
+export default ConnectedItemsContainer;

@@ -1,11 +1,7 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 
-class BusyIndicator extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
+class BusyIndicator extends React.PureComponent {
   render() {
     return (
       <BusyIndicatorStyled>

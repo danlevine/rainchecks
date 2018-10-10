@@ -57,7 +57,7 @@ const items = (state = initialState, action) => {
           ),
           filter: "active"
         };
-
+      } else {
         return { ...state };
       }
     default:

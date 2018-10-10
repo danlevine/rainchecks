@@ -67,9 +67,9 @@ const mapStateToProps = ({ user, isAppBusy }) => {
   };
 };
 
-App = connect(
+const ConnectedApp = connect(
   mapStateToProps,
   actions
 )(App);
 
-export default App;
+export default ConnectedApp;

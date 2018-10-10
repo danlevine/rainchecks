@@ -1,18 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import firebase from "firebase";
-import firebaseui from "firebaseui";
 
 import * as actions from "../actions";
 
-import AuthLoginButton from "./AuthLoginButton";
-
 class WelcomeSplash extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     this.props.initAuthBox();
   }
@@ -58,16 +50,9 @@ const WelcomeSplashStyled = styled.div`
   }
 `;
 
-const mapStateToProps = ({ user, isAppBusy }) => {
-  return {
-    user,
-    isAppBusy
-  };
-};
-
-WelcomeSplash = connect(
+const ConnectedWelcomeSplash = connect(
   null,
   actions
 )(WelcomeSplash);
 
-export default WelcomeSplash;
+export default ConnectedWelcomeSplash;
