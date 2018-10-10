@@ -37,9 +37,9 @@ class AddItem extends Component {
       placeholder: "search movie here",
       value,
       onChange,
-      isLoading,
       autoFocus: true,
-      className: "add-item-form__input"
+      className: "add-item-form__input",
+      isLoading
     };
 
     return (
@@ -72,7 +72,13 @@ const getSuggestionValue = suggestion => suggestion.Title;
 
 const renderInputComponent = inputProps => (
   <div className="add-item-form__input-container">
-    <input {...inputProps} />
+    <input
+      placeholder={inputProps.placeholder}
+      value={inputProps.value}
+      onChange={inputProps.onChange}
+      autoFocus={inputProps.autoFocus}
+      className={inputProps.className}
+    />
     {inputProps.isLoading ? (
       <div className="spinner spinner-light">
         <span className="spinner__text">Loading...</span>
@@ -100,11 +106,10 @@ const renderSuggestion = suggestion => (
 const shouldRenderSuggestions = value => value.trim().length >= 2;
 
 const mapStateToProps = state => {
-  const { value, suggestions, isLoading } = state;
+  const { value, suggestions } = state;
   return {
     value,
-    suggestions,
-    isLoading
+    suggestions
   };
 };
 
