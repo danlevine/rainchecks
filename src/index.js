@@ -11,7 +11,6 @@ import * as serviceWorker from "./serviceWorker";
 
 import "./main.sass";
 
-// ReactDOM.render(<App />, document.getElementById("root"));
 let store = createStore(rcApp, composeWithDevTools(applyMiddleware(thunk)));
 
 ReactDOM.render(

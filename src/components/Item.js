@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import _ from "lodash";
 import styled from "styled-components";
 
 import PosterImageLoader from "./PosterImageLoader";
@@ -29,22 +28,16 @@ class Item extends Component {
       status,
       name,
       releaseDate,
-      rated,
       runtime,
       genres,
-      director,
-      actors,
       cast,
       crew,
       overview,
-      country,
-      awards,
       imagePosterPath,
       scoreMetacritic,
       scoreImdb,
       scoreTomato,
       scoreTomatoUser,
-      tomatoConsensus,
       videos
     } = this.props;
 
@@ -62,11 +55,10 @@ class Item extends Component {
     const expandedClassStr = this.state.itemExpanded
       ? " item-expanded"
       : " item-collapsed";
-    const moreInfoBtnTxt = this.state.itemExpanded ? "Hide" : "Show";
 
     return (
       <ItemStyled className={expandedClassStr}>
-        <div className="item-main" onClick={this.toggleExpandState}>
+        <button className="item-main" onClick={this.toggleExpandState}>
           <PosterImageLoader
             className="item__poster"
             src={`https://image.tmdb.org/t/p/w342${imagePosterPath}`}
@@ -111,12 +103,6 @@ class Item extends Component {
               <li className="item__score-metacritic">{scoreMetacritic}</li>
             )}
           </ul>
-          {/* <button
-              className="item__btn-slide"
-              onClick={this.toggleExpandState}
-            >
-              More <i className="fa fa-chevron-down" />
-            </button> */}
           <div className="item__toggle-indicator">
             {this.state.itemExpanded ? (
               <i className="fa fa-chevron-up" />
@@ -124,7 +110,7 @@ class Item extends Component {
               <i className="fa fa-chevron-down" />
             )}
           </div>
-        </div>
+        </button>
         <div className={`item__slide-down${expandedClassStr}`}>
           <div className="item__slide-down-description">
             <p className="item__plot">{overview}</p>
@@ -141,24 +127,38 @@ class Item extends Component {
               <a
                 className="item__footer-btn"
                 target="_blank"
+                rel="noopener noreferrer"
                 href={`https://youtu.be/${videos.results[0].key}`}
+                tabIndex={this.state.itemExpanded ? null : "-1"}
               >
                 <i className="fa fa-film" />
                 View trailer
               </a>
             )}
             {status === "active" ? (
-              <button className="item__footer-btn" onClick={onArchiveClick}>
+              <button
+                className="item__footer-btn"
+                onClick={onArchiveClick}
+                disabled={!this.state.itemExpanded}
+              >
                 <i className="fa fa-eye fa-fw" />
                 Mark as watched
               </button>
             ) : (
-              <button className="item__footer-btn" onClick={onUnarchiveClick}>
+              <button
+                className="item__footer-btn"
+                onClick={onUnarchiveClick}
+                disabled={!this.state.itemExpanded}
+              >
                 <i className="fa fa-eye-slash fa-fw" />
                 Mark as unwatched
               </button>
             )}
-            <button className="item__footer-btn" onClick={onDeleteClick}>
+            <button
+              className="item__footer-btn"
+              onClick={onDeleteClick}
+              disabled={!this.state.itemExpanded}
+            >
               <i className="fa fa-minus fa-fw" />
               Remove from list
             </button>
@@ -174,9 +174,7 @@ const item_poster_height_small = 150;
 const item_poster_width_small = 100;
 const item_poster_height_medium = 300;
 const item_poster_width_medium = 200;
-const item_footer_button_height = 32;
 const break_small = 620;
-const break_before_small = 619;
 const default_padding_amount = 16;
 
 const ItemStyled = styled.li`
@@ -198,6 +196,15 @@ const ItemStyled = styled.li`
     display: flex;
     z-index: 1;
     cursor: pointer;
+    padding: 0;
+    border: none;
+    text-align: left;
+    width: 100%;
+
+    &:focus {
+      outline: none;
+      background-color: rgba(255, 255, 255, 0.9);
+    }
   }
 
   .item__poster {
@@ -350,10 +357,6 @@ const ItemStyled = styled.li`
       align-items: center;
       justify-content: center;
       transition: 0.2s background-color ease-out;
-
-      /* &.fa-eye,
-      &.fa-film {
-      } */
     }
   }
 
