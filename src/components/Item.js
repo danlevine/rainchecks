@@ -409,7 +409,7 @@ const ItemStyled = styled.li`
   .item__accent-label {
     text-transform: uppercase;
     background: white;
-    color: #3192bd;
+    color: #3192bd; /* alternate darker blue, todo: move to globals */
     font-size: 10px;
     padding: 0 2px;
     border-radius: 4px;

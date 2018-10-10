@@ -34,7 +34,7 @@ class AddItem extends Component {
       onSuggestionSelected
     } = this.props;
     const inputProps = {
-      placeholder: "search movie here",
+      placeholder: "type to search",
       value,
       onChange,
       autoFocus: true,
