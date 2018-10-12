@@ -112,7 +112,7 @@ export const initializeItemsList = () => (dispatch, getState) => {
   });
 };
 
-export const refreshAllItems = () => dispatch => {};
+export const refreshAllItems = () => () => {};
 
 export const addItem = item => (dispatch, getState) => {
   const dbUserMovies = createUserDbRefFromState(getState);
@@ -180,7 +180,7 @@ export const checkForLoggedInUser = () => (dispatch, getState) => {
   });
 };
 
-export const unmountAuth = () => dispatch => {
+export const unmountAuth = () => () => {
   authFirebaseListener && authFirebaseListener();
 };
 

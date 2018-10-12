@@ -110,11 +110,6 @@ const mapStateToProps = ({ user, items }) => {
   };
 };
 
-HeaderMenu = connect(
-  mapStateToProps,
-  actions
-)(HeaderMenu);
-
 const HeaderMenuStyled = styled.div`
   button {
     &:focus {
@@ -219,4 +214,9 @@ const DropdownUnderlayStyled = styled.div`
   animation: 0.4s fadein;
 `;
 
-export default HeaderMenu;
+const ConnectedHeaderMenu = connect(
+  mapStateToProps,
+  actions
+)(HeaderMenu);
+
+export default ConnectedHeaderMenu;

@@ -203,7 +203,7 @@ const ItemStyled = styled.li`
 
     &:focus {
       outline: none;
-      background-color: rgba(255, 255, 255, 0.9);
+      /* background-color: rgba(255, 255, 255, 0.9); */
     }
   }
 
@@ -337,7 +337,7 @@ const ItemStyled = styled.li`
 
     &:focus {
       outline: none;
-      background-color: rgba(255, 255, 255, 0.2);
+      /* background-color: rgba(255, 255, 255, 0.2); */
     }
 
     &:hover {
