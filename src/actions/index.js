@@ -169,7 +169,8 @@ export const getMoviesByList = listId => (dispatch, getState) => {
             .get();
 
           // Augment each movie object with additional list-specific metadata
-          return Object.assign(movie, metadata.data());
+          movie.currentListMetadata = metadata.data();
+          return movie;
         })
       ).then(results => {
         results.forEach(movie => moviesWithMetadata.push(movie));
@@ -177,8 +178,14 @@ export const getMoviesByList = listId => (dispatch, getState) => {
 
       // Based on each item's added date, sort list in descending order
       // (most recently added first)
-      const sortedMovieArray = moviesWithMetadata.sort(
-        (a, b) => (dateFnsIsAfter(b.dateAdded, a.dateAdded) ? 1 : -1)
+      const sortedMovieArray = await moviesWithMetadata.sort(
+        (a, b) =>
+          dateFnsIsAfter(
+            b.currentListMetadata.dateAdded,
+            a.currentListMetadata.dateAdded
+          )
+            ? 1
+            : -1
       );
 
       dispatch({
@@ -208,7 +215,6 @@ export const addItem = item => (dispatch, getState) => {
         } else {
           console.log("exists and recently updated");
           console.log("just add current list to item");
-          debugger;
           itemToAdd = doc.ref;
         }
       });
@@ -252,10 +258,30 @@ export const addItem = item => (dispatch, getState) => {
 //   dbUserMovies.child(key).update({ status: "active" });
 // };
 
-// export const deleteItem = key => (dispatch, getState) => {
-//   const dbUserMovies = createUserDbRefFromState(getState);
-//   dbUserMovies.child(key).remove();
-// };
+export const deleteItem = key => (dispatch, getState) => {
+  var currentListId = getState().items.currentList;
+  var movieRef = db.collection("movies").doc(key);
+  var movieCurrentListMetadata = movieRef
+    .collection("containingListMetadata")
+    .doc(currentListId);
+
+  movieRef.update({
+    containingLists: firebase.firestore.FieldValue.arrayRemove(currentListId)
+  });
+
+  // Get a new write batch
+  var batch = db.batch();
+
+  batch.update(movieRef, {
+    containingLists: firebase.firestore.FieldValue.arrayRemove(currentListId)
+  });
+  batch.delete(movieCurrentListMetadata);
+
+  // Commit the batch
+  batch.commit().then(function() {
+    console.log(`Item: ${key} removed from list ${currentListId}`);
+  });
+};
 
 export const updateInputValue = value => dispatch => {
   dispatch({
@@ -329,7 +355,6 @@ export const showFullList = () => dispatch =>
   });
 
 function createNewItem(item) {
-  debugger;
   const newMovieRef = db.collection("movies").doc();
   const movieId = newMovieRef.id;
 
