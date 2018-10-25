@@ -1,9 +1,10 @@
 import _ from "lodash";
 
 const initialState = {
-  item: [],
+  items: [],
   filteredItems: [],
-  filter: "active"
+  filter: "active",
+  currentList: ""
 };
 
 const items = (state = initialState, action) => {
@@ -15,7 +16,8 @@ const items = (state = initialState, action) => {
         filteredItems: _.filter(
           action.payload,
           item => item.status === state.filter
-        )
+        ),
+        currentList: action.currentList
       };
     case "FILTER_DISPLAY_ALL":
       return {

@@ -5,7 +5,7 @@ const initialState = {
 
 const user = (state = initialState, action) => {
   switch (action.type) {
-    case "EXISTING_USER_DETECTED_AND_LOGGED_IN":
+    case "USER_DATA_LOADED":
       return {
         ...state,
         currentUser: action.user,
