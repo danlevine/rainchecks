@@ -248,15 +248,39 @@ export const addItem = item => (dispatch, getState) => {
   }
 };
 
-// export const archiveItem = key => (dispatch, getState) => {
-//   const dbUserMovies = createUserDbRefFromState(getState);
-//   dbUserMovies.child(key).update({ status: "archived" });
-// };
+export const archiveItem = key => (dispatch, getState) => {
+  var currentListId = getState().items.currentList;
+  var movieCurrentListMetadata = db
+    .collection("movies")
+    .doc(key)
+    .collection("containingListMetadata")
+    .doc(currentListId);
 
-// export const unarchiveItem = key => (dispatch, getState) => {
-//   const dbUserMovies = createUserDbRefFromState(getState);
-//   dbUserMovies.child(key).update({ status: "active" });
-// };
+  movieCurrentListMetadata
+    .update({
+      archived: true
+    })
+    .then(() => {
+      getMoviesByList(getState().items.currentList)(dispatch, getState);
+    });
+};
+
+export const unarchiveItem = key => (dispatch, getState) => {
+  var currentListId = getState().items.currentList;
+  var movieCurrentListMetadata = db
+    .collection("movies")
+    .doc(key)
+    .collection("containingListMetadata")
+    .doc(currentListId);
+
+  movieCurrentListMetadata
+    .update({
+      archived: false
+    })
+    .then(() => {
+      getMoviesByList(getState().items.currentList)(dispatch, getState);
+    });
+};
 
 export const deleteItem = key => (dispatch, getState) => {
   var currentListId = getState().items.currentList;
@@ -264,10 +288,6 @@ export const deleteItem = key => (dispatch, getState) => {
   var movieCurrentListMetadata = movieRef
     .collection("containingListMetadata")
     .doc(currentListId);
-
-  movieRef.update({
-    containingLists: firebase.firestore.FieldValue.arrayRemove(currentListId)
-  });
 
   // Get a new write batch
   var batch = db.batch();

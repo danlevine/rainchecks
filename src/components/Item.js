@@ -25,7 +25,6 @@ class Item extends Component {
       onDeleteClick,
       onArchiveClick,
       onUnarchiveClick,
-      status,
       name,
       releaseDate,
       runtime,
@@ -40,6 +39,8 @@ class Item extends Component {
       scoreTomatoUser,
       videos
     } = this.props;
+
+    const { archived } = this.props.currentListMetadata;
 
     const genreStr = genres ? genres.map(x => x.name).join(", ") : "";
     const releaseDateStr = releaseDate ? releaseDate.substr(0, 4) : "";
@@ -135,7 +136,7 @@ class Item extends Component {
                 View trailer
               </a>
             )}
-            {status === "active" ? (
+            {!archived ? (
               <button
                 className="item__footer-btn"
                 onClick={onArchiveClick}

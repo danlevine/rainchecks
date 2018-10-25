@@ -15,7 +15,10 @@ const items = (state = initialState, action) => {
         items: action.payload,
         filteredItems: _.filter(
           action.payload,
-          item => item.status === state.filter
+          item =>
+            state.filter === "active"
+              ? !item.currentListMetadata.archived
+              : item.currentListMetadata.archived
         ),
         currentList: action.currentList
       };
@@ -28,7 +31,10 @@ const items = (state = initialState, action) => {
     case "FILTER_DISPLAY_ACTIVE":
       return {
         ...state,
-        filteredItems: _.filter(state.items, item => item.status === "active"),
+        filteredItems: _.filter(
+          state.items,
+          item => item.currentListMetadata.archived === false
+        ),
         filter: "active"
       };
     case "FILTER_DISPLAY_ARCHIVED":
@@ -36,7 +42,7 @@ const items = (state = initialState, action) => {
         ...state,
         filteredItems: _.filter(
           state.items,
-          item => item.status === "archived"
+          item => item.currentListMetadata.archived === true
         ),
         filter: "archived"
       };
@@ -46,7 +52,7 @@ const items = (state = initialState, action) => {
           ...state,
           filteredItems: _.filter(
             state.items,
-            item => item.status === "archived"
+            item => item.currentListMetadata.archived === true
           ),
           filter: "archived"
         };
@@ -55,7 +61,7 @@ const items = (state = initialState, action) => {
           ...state,
           filteredItems: _.filter(
             state.items,
-            item => item.status === "active"
+            item => item.currentListMetadata.archived === false
           ),
           filter: "active"
         };
