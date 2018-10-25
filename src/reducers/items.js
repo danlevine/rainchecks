@@ -3,7 +3,7 @@ import _ from "lodash";
 const initialState = {
   items: [],
   filteredItems: [],
-  filter: "active",
+  filter: "unwatched",
   currentList: ""
 };
 
@@ -16,9 +16,9 @@ const items = (state = initialState, action) => {
         filteredItems: _.filter(
           action.payload,
           item =>
-            state.filter === "active"
-              ? !item.currentListMetadata.archived
-              : item.currentListMetadata.archived
+            state.filter === "unwatched"
+              ? !item.currentListMetadata.watched
+              : item.currentListMetadata.watched
         ),
         currentList: action.currentList
       };
@@ -28,42 +28,42 @@ const items = (state = initialState, action) => {
         filteredItems: state.items,
         filter: "all"
       };
-    case "FILTER_DISPLAY_ACTIVE":
+    case "FILTER_DISPLAY_UNWATCHED":
       return {
         ...state,
         filteredItems: _.filter(
           state.items,
-          item => item.currentListMetadata.archived === false
+          item => !item.currentListMetadata.watched
         ),
-        filter: "active"
+        filter: "unwatched"
       };
-    case "FILTER_DISPLAY_ARCHIVED":
+    case "FILTER_DISPLAY_WATCHED":
       return {
         ...state,
         filteredItems: _.filter(
           state.items,
-          item => item.currentListMetadata.archived === true
+          item => item.currentListMetadata.watched
         ),
-        filter: "archived"
+        filter: "watched"
       };
     case "FILTER_DISPLAY_TOGGLE":
-      if (state.filter === "active") {
+      if (state.filter === "unwatched") {
         return {
           ...state,
           filteredItems: _.filter(
             state.items,
-            item => item.currentListMetadata.archived === true
+            item => item.currentListMetadata.watched
           ),
-          filter: "archived"
+          filter: "watched"
         };
-      } else if (state.filter === "archived") {
+      } else if (state.filter === "watched") {
         return {
           ...state,
           filteredItems: _.filter(
             state.items,
-            item => item.currentListMetadata.archived === false
+            item => !item.currentListMetadata.watched
           ),
-          filter: "active"
+          filter: "unwatched"
         };
       } else {
         return { ...state };

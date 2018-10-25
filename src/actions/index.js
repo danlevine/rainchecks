@@ -232,7 +232,7 @@ export const addItem = item => (dispatch, getState) => {
       containingLists: firebase.firestore.FieldValue.arrayUnion(currentList)
     });
     batch.set(itemToAddContainingListMetadata, {
-      archived: false,
+      watched: null,
       dateAdded: currentDateTime
     });
 
@@ -258,7 +258,7 @@ export const archiveItem = key => (dispatch, getState) => {
 
   movieCurrentListMetadata
     .update({
-      archived: true
+      watched: dateFnsFormat(new Date())
     })
     .then(() => {
       getMoviesByList(getState().items.currentList)(dispatch, getState);
@@ -275,7 +275,7 @@ export const unarchiveItem = key => (dispatch, getState) => {
 
   movieCurrentListMetadata
     .update({
-      archived: false
+      watched: null
     })
     .then(() => {
       getMoviesByList(getState().items.currentList)(dispatch, getState);
@@ -354,17 +354,17 @@ export const cancelAddItem = () => dispatch =>
     type: "ADD_ITEM_FORM_CANCEL"
   });
 
-export const showActiveList = () => dispatch =>
+export const showUnwatchedList = () => dispatch =>
   dispatch({
-    type: "FILTER_DISPLAY_ACTIVE"
+    type: "FILTER_DISPLAY_UNWATCHED"
   });
 
-export const showArchivedList = () => dispatch =>
+export const showWatchedList = () => dispatch =>
   dispatch({
-    type: "FILTER_DISPLAY_ARCHIVED"
+    type: "FILTER_DISPLAY_WATCHED"
   });
 
-export const toggleActiveArchivedList = () => dispatch =>
+export const toggleWatchedList = () => dispatch =>
   dispatch({
     type: "FILTER_DISPLAY_TOGGLE"
   });
@@ -444,7 +444,6 @@ function fetchMovieDetails(movieId) {
     axios(tmdbMovieDetailsEndpoint)
       .then(({ data }) => {
         movieData = {
-          status: "active",
           lastFetched: currentDateTime,
           idTmdb: data.id,
           name: data.title,

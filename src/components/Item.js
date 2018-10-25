@@ -40,7 +40,7 @@ class Item extends Component {
       videos
     } = this.props;
 
-    const { archived } = this.props.currentListMetadata;
+    const { watched } = this.props.currentListMetadata;
 
     const genreStr = genres ? genres.map(x => x.name).join(", ") : "";
     const releaseDateStr = releaseDate ? releaseDate.substr(0, 4) : "";
@@ -136,7 +136,7 @@ class Item extends Component {
                 View trailer
               </a>
             )}
-            {!archived ? (
+            {!watched ? (
               <button
                 className="item__footer-btn"
                 onClick={onArchiveClick}
