@@ -208,7 +208,12 @@ export const addItem = item => (dispatch, getState) => {
       });
     } else {
       querySnapshot.forEach(function refreshItemIfStale(doc) {
-        if (isItemDataStale(doc.data().lastFetched)) {
+        const docData = doc.data();
+
+        // If item already exists in your list
+        if (docData.containingLists.includes(currentList)) {
+          console.log("exists and is already in current list");
+        } else if (isItemDataStale(docData.lastFetched)) {
           console.log("exists but not recently updated");
           itemToAdd = refreshExistingItem(item);
         } else {
@@ -218,7 +223,11 @@ export const addItem = item => (dispatch, getState) => {
         }
       });
 
-      addItemToList(itemToAdd, currentList);
+      if (itemToAdd) {
+        addItemToList(itemToAdd, currentList);
+      } else {
+        alert("already added!");
+      }
     }
   });
 
