@@ -105,12 +105,16 @@ const PendingItemPlaceholder = styled.li`
   animation-name: slidein-item;
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 
-  @media (min-width: 620px) {
-    min-height: 300px;
-  }
-
   div {
     top: 15px;
+  }
+
+  @media (min-width: 620px) {
+    min-height: 300px;
+
+    div {
+      top: 85px;
+    }
   }
 `;
 
