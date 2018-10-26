@@ -178,12 +178,12 @@ export const getMoviesByList = listId => (dispatch, getState) => {
             ? 1
             : -1;
         });
-      });
 
-      dispatch({
-        type: "FETCH_ITEMS_SUCCESS",
-        payload: sortedMovieArray,
-        currentList: listId
+        dispatch({
+          type: "FETCH_ITEMS_SUCCESS",
+          payload: sortedMovieArray,
+          currentList: listId
+        });
       });
     });
 };
@@ -242,9 +242,6 @@ export const addItem = item => (dispatch, getState) => {
     // Commit the batch
     batch.commit().then(function() {
       console.log("Item added to list");
-      dispatch({
-        type: "ADD_ITEM_COMPLETE"
-      });
     });
   }
 

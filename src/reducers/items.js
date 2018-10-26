@@ -105,7 +105,6 @@ export const isAddingItem = (state = false, action) => {
     case "ADD_ITEM_BEGIN":
       return true;
     case "FETCH_ITEMS_SUCCESS":
-    case "ADD_ITEM_COMPLETE":
       return false;
     default:
       return state;
