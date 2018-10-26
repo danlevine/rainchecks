@@ -101,7 +101,7 @@ const PendingItemPlaceholder = styled.li`
   border: none;
   text-align: left;
   width: 100%;
-  animation-duration: 0.4s;
+  animation-duration: 0.2s;
   animation-name: slidein-item;
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 
