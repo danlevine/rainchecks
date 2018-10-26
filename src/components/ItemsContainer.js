@@ -7,7 +7,13 @@ import ItemList from "../components/ItemList";
 
 class ItemsContainer extends Component {
   render() {
-    const { archiveItem, unarchiveItem, deleteItem, items } = this.props;
+    const {
+      archiveItem,
+      unarchiveItem,
+      deleteItem,
+      items,
+      isAddingItem
+    } = this.props;
 
     return (
       <ItemList
@@ -15,14 +21,16 @@ class ItemsContainer extends Component {
         onArchiveClick={archiveItem}
         onUnarchiveClick={unarchiveItem}
         onDeleteClick={deleteItem}
+        isAddingItem={isAddingItem}
       />
     );
   }
 }
 
-const mapStateToProps = ({ items }) => {
+const mapStateToProps = ({ items, isAddingItem }) => {
   return {
-    items
+    items,
+    isAddingItem
   };
 };
 

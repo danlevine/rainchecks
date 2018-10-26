@@ -5,7 +5,8 @@ import {
   addItem,
   loadSuggestions,
   updateInputValue,
-  clearSuggestions
+  clearSuggestions,
+  closeAddItem
 } from "../actions";
 
 class AddItem extends Component {
@@ -126,6 +127,7 @@ const mapDispatchToProps = dispatch => {
     },
     onSuggestionSelected(event, { suggestion }) {
       dispatch(addItem(suggestion));
+      dispatch(closeAddItem());
       dispatch(clearSuggestions());
       dispatch(updateInputValue(""));
     }

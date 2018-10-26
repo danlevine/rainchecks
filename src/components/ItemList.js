@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import _ from "lodash";
 import styled from "styled-components";
 
+import BusyIndicator from "./BusyIndicator";
 import Item from "./Item";
 
 class ItemList extends Component {
@@ -34,7 +35,7 @@ class ItemList extends Component {
   }
 
   render() {
-    const { items } = this.props;
+    const { items, isAddingItem } = this.props;
     const { moreItemsVisible } = this.state;
 
     if (items.filteredItems.length === 0) {
@@ -48,6 +49,12 @@ class ItemList extends Component {
 
     return (
       <ul className="item-list">
+        {isAddingItem && (
+          <PendingItemPlaceholder>
+            <BusyIndicator />
+          </PendingItemPlaceholder>
+        )}
+
         {_.map(items.filteredItems.slice(0, 6), item => this.createItem(item))}
 
         {!moreItemsVisible &&
@@ -79,6 +86,32 @@ const NoItemsContainerStyled = styled.div`
   margin: 0 auto;
   text-align: center;
   font-size: 16px;
+`;
+
+const PendingItemPlaceholder = styled.li`
+  margin-bottom: 16px;
+  background-color: #fff;
+  border-radius: 6px;
+  position: relative;
+  min-height: 150px;
+  display: flex;
+  z-index: 1;
+  cursor: pointer;
+  padding: 0;
+  border: none;
+  text-align: left;
+  width: 100%;
+  animation-duration: 0.4s;
+  animation-name: slidein-item;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+
+  @media (min-width: 620px) {
+    min-height: 300px;
+  }
+
+  div {
+    top: 15px;
+  }
 `;
 
 export default ItemList;

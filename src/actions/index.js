@@ -189,6 +189,10 @@ export const getMoviesByList = listId => (dispatch, getState) => {
 };
 
 export const addItem = item => (dispatch, getState) => {
+  dispatch({
+    type: "ADD_ITEM_BEGIN"
+  });
+
   const { currentList } = getState().items;
   var itemRef = db.collection("movies").where("idTmdb", "==", item.id);
 
@@ -238,6 +242,9 @@ export const addItem = item => (dispatch, getState) => {
     // Commit the batch
     batch.commit().then(function() {
       console.log("Item added to list");
+      dispatch({
+        type: "ADD_ITEM_COMPLETE"
+      });
     });
   }
 
@@ -348,9 +355,9 @@ export const activateAddItem = () => dispatch =>
     type: "ADD_ITEM_FORM_ACTIVATE"
   });
 
-export const cancelAddItem = () => dispatch =>
+export const closeAddItem = () => dispatch =>
   dispatch({
-    type: "ADD_ITEM_FORM_CANCEL"
+    type: "ADD_ITEM_FORM_CLOSE"
   });
 
 export const showUnwatchedList = () => dispatch =>

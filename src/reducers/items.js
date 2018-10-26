@@ -91,8 +91,21 @@ export const isAddFormActive = (state = false, action) => {
   switch (action.type) {
     case "ADD_ITEM_FORM_ACTIVATE":
       return true;
-    case "ADD_ITEM_FORM_CANCEL":
+    case "ADD_ITEM_FORM_CLOSE":
+    case "ADD_ITEM_BEGIN":
     case "FETCH_ITEMS_SUCCESS":
+      return false;
+    default:
+      return state;
+  }
+};
+
+export const isAddingItem = (state = false, action) => {
+  switch (action.type) {
+    case "ADD_ITEM_BEGIN":
+      return true;
+    case "FETCH_ITEMS_SUCCESS":
+    case "ADD_ITEM_COMPLETE":
       return false;
     default:
       return state;

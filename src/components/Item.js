@@ -202,6 +202,7 @@ const ItemStyled = styled.li`
     border: none;
     text-align: left;
     width: 100%;
+    margin-bottom: 5px; /* To offset the negative margin-top of the expandable section (when collapsed) */
 
     &:focus {
       outline: none;
