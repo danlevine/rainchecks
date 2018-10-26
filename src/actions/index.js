@@ -6,7 +6,6 @@ import firebaseui from "firebaseui";
 import dateFnsIsAfter from "date-fns/is_after";
 import dateFnsFormat from "date-fns/format";
 import dateFnsDifferenceInDays from "date-fns/difference_in_days";
-import { querystring } from "@firebase/util";
 
 // FIREBASE CONFIG
 const config = {
@@ -146,7 +145,6 @@ export const getMoviesByList = listId => (dispatch, getState) => {
     .onSnapshot(async function buildMovieList(querySnapshot) {
       // convert movie list object into array for processing
       var movies = [];
-      var moviesWithMetadata = [];
       var sortedMovieArray = [];
 
       // Push each result into movies array for processing
