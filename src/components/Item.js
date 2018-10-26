@@ -124,18 +124,19 @@ class Item extends Component {
             </p>
           </div>
           <div className="item__footer">
-            {videos && (
-              <a
-                className="item__footer-btn"
-                target="_blank"
-                rel="noopener noreferrer"
-                href={`https://youtu.be/${videos.results[0].key}`}
-                tabIndex={this.state.itemExpanded ? null : "-1"}
-              >
-                <i className="fa fa-film" />
-                View trailer
-              </a>
-            )}
+            {videos &&
+              videos.results.length > 0 && (
+                <a
+                  className="item__footer-btn"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={`https://youtu.be/${videos.results[0].key}`}
+                  tabIndex={this.state.itemExpanded ? null : "-1"}
+                >
+                  <i className="fa fa-film" />
+                  View trailer
+                </a>
+              )}
             {!watched ? (
               <button
                 className="item__footer-btn"
