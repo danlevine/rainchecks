@@ -135,12 +135,6 @@ export const userLogout = () => dispatch => {
   });
 };
 
-// const createUserDbRefFromState = getState => {
-//   debugger;
-//   const { uid } = getState().user.currentUser;
-//   return db.ref(`users/${uid}/movies`);
-// };
-
 export const getMoviesByList = listId => (dispatch, getState) => {
   dispatch({
     type: "FETCH_ITEMS_REQUEST"
@@ -153,6 +147,7 @@ export const getMoviesByList = listId => (dispatch, getState) => {
       // convert movie list object into array for processing
       var movies = [];
       var moviesWithMetadata = [];
+      var sortedMovieArray = [];
 
       // Push each result into movies array for processing
       querySnapshot.forEach(function(doc) {
@@ -173,20 +168,19 @@ export const getMoviesByList = listId => (dispatch, getState) => {
           return movie;
         })
       ).then(results => {
-        results.forEach(movie => moviesWithMetadata.push(movie));
-      });
-
-      // Based on each item's added date, sort list in descending order
-      // (most recently added first)
-      const sortedMovieArray = await moviesWithMetadata.sort(
-        (a, b) =>
-          dateFnsIsAfter(
+        // Based on each item's added date, sort list in descending order
+        // (most recently added first)
+        sortedMovieArray = results.sort((a, b) => {
+          if (!b.currentListMetadata) return 1;
+          if (!a.currentListMetadata) return -1;
+          return dateFnsIsAfter(
             b.currentListMetadata.dateAdded,
             a.currentListMetadata.dateAdded
           )
             ? 1
-            : -1
-      );
+            : -1;
+        });
+      });
 
       dispatch({
         type: "FETCH_ITEMS_SUCCESS",
@@ -206,7 +200,10 @@ export const addItem = item => (dispatch, getState) => {
 
     if (querySnapshot.empty) {
       console.log("does not exist");
-      itemToAdd = createNewItem(item);
+      itemToAdd = createNewItem(item).then(itemRef => {
+        addItemToList(itemRef, currentList);
+        // TODO: SHOW AND THEN HIDE BUSY INDICATOR HERE
+      });
     } else {
       querySnapshot.forEach(function refreshItemIfStale(doc) {
         if (isItemDataStale(doc.data().lastFetched)) {
@@ -218,20 +215,24 @@ export const addItem = item => (dispatch, getState) => {
           itemToAdd = doc.ref;
         }
       });
-    }
 
+      addItemToList(itemToAdd, currentList);
+    }
+  });
+
+  function addItemToList(itemRef, listId) {
     const currentDateTime = dateFnsFormat(new Date());
 
     // Get a new write batch
     var batch = db.batch();
-    var itemToAddContainingListMetadata = itemToAdd
+    var itemContainingListMetadata = itemRef
       .collection("containingListMetadata")
-      .doc(currentList);
+      .doc(listId);
 
-    batch.update(itemToAdd, {
-      containingLists: firebase.firestore.FieldValue.arrayUnion(currentList)
+    batch.update(itemRef, {
+      containingLists: firebase.firestore.FieldValue.arrayUnion(listId)
     });
-    batch.set(itemToAddContainingListMetadata, {
+    batch.set(itemContainingListMetadata, {
       watched: null,
       dateAdded: currentDateTime
     });
@@ -240,7 +241,7 @@ export const addItem = item => (dispatch, getState) => {
     batch.commit().then(function() {
       console.log("Item added to list");
     });
-  });
+  }
 
   function isItemDataStale(lastFetched) {
     const now = dateFnsFormat(new Date());
@@ -374,29 +375,27 @@ export const showFullList = () => dispatch =>
     type: "FILTER_DISPLAY_ALL"
   });
 
-function createNewItem(item) {
+async function createNewItem(item) {
   const newMovieRef = db.collection("movies").doc();
   const movieId = newMovieRef.id;
 
   const movieDetailsPromise = fetchMovieDetails(item.id);
 
-  if (typeof item === "object") {
-    // Create new movie record and update with fetched details
-    newMovieRef
-      .set({
-        key: movieId,
-        name: item.title,
-        idTmdb: item.id,
-        overview: item.overview,
-        imagePosterPath: item.poster_path,
-        imageBackdropPath: item.backdrop_path,
-        releaseDate: item.release_date
-      })
-      .then(() => movieDetailsPromise)
-      .then(movieData => newMovieRef.update(movieData));
-  } else {
-    newMovieRef.set({ name: item.title });
-  }
+  // Create new movie record and update with fetched details
+  await movieDetailsPromise.then(movieData => {
+    const prefetchedMovieData = {
+      key: movieId,
+      name: item.title,
+      idTmdb: item.id,
+      overview: item.overview,
+      imagePosterPath: item.poster_path,
+      imageBackdropPath: item.backdrop_path,
+      releaseDate: item.release_date
+    };
+    const mergedMovieData = Object.assign(prefetchedMovieData, movieData);
+
+    newMovieRef.set(mergedMovieData);
+  });
 
   return newMovieRef;
 }
@@ -420,13 +419,6 @@ function refreshExistingItem(item) {
     .then(movieData => movieRef.update(movieData));
 
   return movieRef;
-}
-
-function addItemToList(itemRef, listId) {
-  // const movieRef = db.collection("movies").doc(itemRef);
-  itemRef.update({
-    containingLists: firebase.firestore.FieldValue.arrayUnion(listId)
-  });
 }
 
 function fetchMovieDetails(movieId) {
