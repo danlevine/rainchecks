@@ -8,6 +8,7 @@ import ItemsContainer from "./ItemsContainer";
 import Header from "./Header";
 import BusyIndicator from "./BusyIndicator";
 import WelcomeSplash from "./WelcomeSplash";
+import Messenger from "./Messenger";
 
 class App extends React.Component {
   constructor(props) {
@@ -45,6 +46,7 @@ class App extends React.Component {
           <Header />
           <ItemsContainer />
           <AddItemLauncher />
+          <Messenger />
         </div>
       );
     }
@@ -54,6 +56,7 @@ class App extends React.Component {
         <div className="container">
           <Header />
           <WelcomeSplash />
+          <Messenger />
         </div>
       );
     }

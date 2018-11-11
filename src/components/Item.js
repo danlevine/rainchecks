@@ -40,7 +40,9 @@ class Item extends Component {
       videos
     } = this.props;
 
-    const { watched } = this.props.currentListMetadata;
+    var watched = this.props.currentListMetadata
+      ? this.props.currentListMetadata.watched
+      : false;
 
     const genreStr = genres ? genres.map(x => x.name).join(", ") : "";
     const releaseDateStr = releaseDate ? releaseDate.substr(0, 4) : "";
@@ -124,19 +126,18 @@ class Item extends Component {
             </p>
           </div>
           <div className="item__footer">
-            {videos &&
-              videos.results.length > 0 && (
-                <a
-                  className="item__footer-btn"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href={`https://youtu.be/${videos.results[0].key}`}
-                  tabIndex={this.state.itemExpanded ? null : "-1"}
-                >
-                  <i className="fa fa-film" />
-                  View trailer
-                </a>
-              )}
+            {videos && videos.results.length > 0 && (
+              <a
+                className="item__footer-btn"
+                target="_blank"
+                rel="noopener noreferrer"
+                href={`https://youtu.be/${videos.results[0].key}`}
+                tabIndex={this.state.itemExpanded ? null : "-1"}
+              >
+                <i className="fa fa-film" />
+                View trailer
+              </a>
+            )}
             {!watched ? (
               <button
                 className="item__footer-btn"

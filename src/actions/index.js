@@ -204,7 +204,6 @@ export const addItem = item => (dispatch, getState) => {
       console.log("does not exist");
       itemToAdd = createNewItem(item).then(itemRef => {
         addItemToList(itemRef, currentList);
-        // TODO: SHOW AND THEN HIDE BUSY INDICATOR HERE
       });
     } else {
       querySnapshot.forEach(function refreshItemIfStale(doc) {
@@ -226,7 +225,13 @@ export const addItem = item => (dispatch, getState) => {
       if (itemToAdd) {
         addItemToList(itemToAdd, currentList);
       } else {
-        alert("already added!");
+        // alert("already added!");
+        dispatch({
+          type: "ADD_ITEM_FAILED"
+        });
+        popMessenger("This movie is already in your list", "Duplicate Movie")(
+          dispatch
+        );
       }
     }
   });
@@ -384,6 +389,19 @@ export const toggleWatchedList = () => dispatch =>
 export const showFullList = () => dispatch =>
   dispatch({
     type: "FILTER_DISPLAY_ALL"
+  });
+
+export const popMessenger = (message, title) => dispatch =>
+  dispatch({
+    type: "POP_MESSENGER",
+    message,
+    title
+  });
+
+export const hideMessenger = message => dispatch =>
+  dispatch({
+    type: "HIDE_MESSENGER",
+    message
   });
 
 async function createNewItem(item) {

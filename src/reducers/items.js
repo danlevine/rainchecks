@@ -13,13 +13,15 @@ const items = (state = initialState, action) => {
       return {
         ...state,
         items: action.payload,
-        filteredItems: _.filter(
-          action.payload,
-          item =>
-            state.filter === "unwatched"
-              ? !item.currentListMetadata.watched
-              : item.currentListMetadata.watched
-        ),
+        filteredItems: _.filter(action.payload, item => {
+          if (state.filter === "unwatched") {
+            if (!item.currentListMetadata) return true;
+            return !item.currentListMetadata.watched;
+          } else {
+            if (!item.currentListMetadata) return false;
+            return item.currentListMetadata.watched;
+          }
+        }),
         currentList: action.currentList
       };
     case "FILTER_DISPLAY_ALL":
@@ -105,6 +107,7 @@ export const isAddingItem = (state = false, action) => {
     case "ADD_ITEM_BEGIN":
       return true;
     case "FETCH_ITEMS_SUCCESS":
+    case "ADD_ITEM_FAILED":
       return false;
     default:
       return state;
