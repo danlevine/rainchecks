@@ -134,7 +134,7 @@ export const userLogout = () => dispatch => {
   });
 };
 
-export const getMoviesByList = listId => (dispatch, getState) => {
+export const getMoviesByList = listId => dispatch => {
   dispatch({
     type: "FETCH_ITEMS_REQUEST"
   });
@@ -214,7 +214,7 @@ export const addItem = item => (dispatch, getState) => {
           console.log("exists and is already in current list");
         } else if (isItemDataStale(docData.lastFetched)) {
           console.log("exists but not recently updated");
-          itemToAdd = refreshExistingItem(item);
+          itemToAdd = refreshExistingItem(item, doc.ref);
         } else {
           console.log("exists and recently updated");
           console.log("just add current list to item");
@@ -429,25 +429,23 @@ async function createNewItem(item) {
   return newMovieRef;
 }
 
-function refreshExistingItem(item) {
-  const movieRef = db.collection("movies").doc(item.key);
-
-  const movieDetailsPromise = fetchMovieDetails(item.id);
+function refreshExistingItem(itemData, itemRef) {
+  const movieDetailsPromise = fetchMovieDetails(itemData.id);
 
   // Update existing movie record
-  movieRef
+  itemRef
     .update({
-      name: item.title,
-      idTmdb: item.id,
-      overview: item.overview,
-      imagePosterPath: item.poster_path,
-      imageBackdropPath: item.backdrop_path,
-      releaseDate: item.release_date
+      name: itemData.title,
+      idTmdb: itemData.id,
+      overview: itemData.overview,
+      imagePosterPath: itemData.poster_path,
+      imageBackdropPath: itemData.backdrop_path,
+      releaseDate: itemData.release_date
     })
     .then(() => movieDetailsPromise)
-    .then(movieData => movieRef.update(movieData));
+    .then(movieData => itemRef.update(movieData));
 
-  return movieRef;
+  return itemRef;
 }
 
 function fetchMovieDetails(movieId) {
