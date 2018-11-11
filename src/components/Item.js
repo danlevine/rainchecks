@@ -25,7 +25,6 @@ class Item extends Component {
       onDeleteClick,
       onArchiveClick,
       onUnarchiveClick,
-      status,
       name,
       releaseDate,
       runtime,
@@ -40,6 +39,10 @@ class Item extends Component {
       scoreTomatoUser,
       videos
     } = this.props;
+
+    var watched = this.props.currentListMetadata
+      ? this.props.currentListMetadata.watched
+      : false;
 
     const genreStr = genres ? genres.map(x => x.name).join(", ") : "";
     const releaseDateStr = releaseDate ? releaseDate.substr(0, 4) : "";
@@ -123,7 +126,7 @@ class Item extends Component {
             </p>
           </div>
           <div className="item__footer">
-            {videos && (
+            {videos && videos.results.length > 0 && (
               <a
                 className="item__footer-btn"
                 target="_blank"
@@ -135,7 +138,7 @@ class Item extends Component {
                 View trailer
               </a>
             )}
-            {status === "active" ? (
+            {!watched ? (
               <button
                 className="item__footer-btn"
                 onClick={onArchiveClick}
@@ -200,6 +203,7 @@ const ItemStyled = styled.li`
     border: none;
     text-align: left;
     width: 100%;
+    margin-bottom: 5px; /* To offset the negative margin-top of the expandable section (when collapsed) */
 
     &:focus {
       outline: none;

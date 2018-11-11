@@ -31,8 +31,8 @@ class HeaderMenu extends Component {
   }
 
   render() {
-    const { toggleActiveArchivedList } = this.props;
-    const showActive = this.props.items.filter === "active";
+    const { toggleWatchedList } = this.props;
+    const showUnwatched = this.props.items.filter === "unwatched";
     const currentUser = this.props.user.currentUser;
 
     if (currentUser) {
@@ -69,10 +69,10 @@ class HeaderMenu extends Component {
                   <hr />
                   <button
                     className="header__toggle-list-btn"
-                    onClick={toggleActiveArchivedList}
+                    onClick={toggleWatchedList}
                   >
-                    {showActive ? "Show Watched " : "Show Unwatched "}
-                    {showActive ? (
+                    {showUnwatched ? "Show Watched " : "Show Unwatched "}
+                    {showUnwatched ? (
                       <i className="fa fa-eye" />
                     ) : (
                       <i className="fa fa-eye-slash" />
